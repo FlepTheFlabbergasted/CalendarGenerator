@@ -1,0 +1,729 @@
+
+/**
+ * Desc.
+ * @param {Number} a 
+ * @param {Number} b
+ * @return {Number} sum
+ */
+
+/*
+  console.log("log: Test");
+  console.error("error: Test");
+  console.info("info: Test");
+  console.warn("warn: Test");
+*/ 
+
+/**
+ * Main tableObj object containing info about the calendar and functions to work on the tableObj.
+ */
+var calendar = {
+    tableObj: null, 
+    currentYear: -1, 
+    startMonthNr: -1,
+    months: [],
+    nrMonths: 3,
+    monthsColspan: [0, 0, 0],
+    monthNames: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
+    weeks: [],
+    startWeek: -1,
+    nrWeeks: -1,
+    changeStartWeek: false,
+    dates: [],
+    names: [],
+    nrNames: -1,
+    maxNrNames: 99,
+    paletteColorArray: ["","red", "yellow", "dodgerblue", "olive"],
+    paletteColor: "",
+    cellLetterArray: ["", "X", "X", "P", "H"],
+    cellLetter: "",
+    monthRow: null,
+    weekRow: null,
+    dateRow: null,
+    nameRows: [],
+    nameRowClassName: "nameRow",
+    /**
+     * Initiate parameters in calendar object that can be set at document load.
+     */
+    init : function() {
+        console.info("[INFO]: Entering calendar.init() function");
+        try {
+            this.tableObj = document.getElementById("calendarTable");
+            this.currentYear = new Date().getFullYear();
+            if(!this.tableObj) throw "Could not get calendar tableObj";
+            if(!this.currentYear) throw "Could not set current year";
+        } catch(err) {
+            console.error("init() function threw error: " + err);
+        }
+    },
+    /**
+     * Clear the table to be able to generate next table and reset some parameters.
+     */
+    reset : function() {
+        console.info("[INFO]: Entering calendar.reset() function");
+        while(this.tableObj.hasChildNodes()) {
+            this.tableObj.removeChild(this.tableObj.lastChild);
+        }
+        this.months = [];
+        this.weeks = [];
+        this.changeStartWeek = false;
+        this.monthsColspan = [0,0,0];
+        this.dates = [];
+        this.names = [];
+        this.nameRows = [];
+    },
+    /**
+     * Main function for generating the table.
+     */
+    generate : function() {
+        console.info("[INFO]: Entering calendar.generate() function");
+        // Make sure the table is cleared before generating the new table.
+        this.reset();
+
+        /* Get the months, weeks, days and all the member's names.
+        * Weeks are calculated by the days, therefore we retreive them first.
+        */
+        this.getMonths();
+        this.getDates();
+        this.getWeeks();
+        this.getNames();
+
+        this.createRows();
+        this.style();
+        
+        this.enableEditing();
+    },
+    /**
+     * Get months from the select element in the html file, save start month number and months.
+     */
+    getMonths : function() {
+        console.info("[INFO]: Entering calendar.getMonths() function");
+        var i = 0;
+        try {
+            this.startMonthNr = parseInt(document.getElementById("startMonth").value, 10);
+            if(this.startMonthNr < 0) throw "Start month is less than zero";
+        } catch(err) {
+            console.error("getMonths() function threw error: " + err);
+        }      
+        finally {
+            // Save the names for all the months in an array of strings.
+            for(i = this.startMonthNr; i < (this.nrMonths + this.startMonthNr); i++) {
+                if(i <= 11) {
+                    this.months.push(this.monthNames[i]);
+                } else {
+                    console.log("Over dec");
+                    this.months.push(this.monthNames[i - 12]);
+                }
+            }
+            console.log("[LOG]: Nr months in calendar: " + this.months.length);
+            console.log("[LOG]: Months in calendar: " + this.months);
+        }
+    },
+    /**
+     * Get all the dates for all the selected months and save them.
+     */
+    getDates: function() {
+        console.info("[INFO]: Entering calendar.getDates() function");
+        // The first week can contain days from previous month and requires special handling.
+        var firstWeekInMonth = true;
+
+        // If the calendar stretches over to the next year.
+        var monthOverflow = 0;
+        var nrDaysInMonth = 0;
+        // To be able to account for the week starting on a Saturday or Sunday.
+        var nrDaysPreviousMonth = daysInMonth(this.currentYear, this.startMonthNr - 1);
+        var previousMonthDate = null;
+        var dayOfWeek = null;
+        var monthsColspanCounter = 0;
+
+        // Loop iterators
+        var month = 0, day = 0, i = 0;
+        
+        // TODO: Able to do shorter/more beautiful/readable code?
+        // Loops through all the months and days to save the dates.
+        for(month = this.startMonthNr; month < (this.startMonthNr + this.nrMonths); month++) {
+            // January = 0, December = 11
+            if(month <= 11) {
+                nrDaysInMonth = daysInMonth(this.currentYear, month);
+            } else {
+                nrDaysInMonth = daysInMonth(this.currentYear + 1, monthOverflow);
+                monthOverflow++;
+            }
+        
+            /* Loop through all the dates in the current month and save the dates. 
+             * Var 'day' starts on '1' because function Date() gives month's number
+             * of days otherwise.
+             */ 
+            for(day = 1; day < (nrDaysInMonth + 1); day++) {
+                if(month <= 11) {
+                    dayOfWeek = new Date(this.currentYear, month, day).getDay();
+                } else {
+                    dayOfWeek = new Date(this.currentYear + 1, monthOverflow - 1, day).getDay();
+                }
+          
+                // Sunday = 0, Saturday = 6
+                if(firstWeekInMonth) {
+                    if(dayOfWeek != 1) {
+                        /* If start of month is on a Saturday or Sunday the starting week needs to be 
+                        * moved forward 1 week to get correct date and week matching.
+                        */
+                        if(dayOfWeek == 0 || dayOfWeek == 6) {
+                            this.changeStartWeek = true;
+                            console.log("[LOG]: Start week to be changed");
+                        } else {
+                            // Insert the missing days in the week from the last month.
+                            previousMonthDate = nrDaysPreviousMonth - (dayOfWeek - 2);
+                            for(i = 0; i < (dayOfWeek - 1); i++) {
+                                this.dates.push(previousMonthDate);
+                                previousMonthDate++;
+                                this.monthsColspan[monthsColspanCounter]++;
+                            }
+                        }
+                    }
+                    firstWeekInMonth = false;
+                }
+                // Save dates between Monday to Friday (working week).
+                if(dayOfWeek >= 1 && dayOfWeek <= 5) {
+                    this.monthsColspan[monthsColspanCounter]++;
+                    this.dates.push(day);
+                }
+            }
+            // Count up the next month's colspan in the next iteration.
+            monthsColspanCounter++;
+        }
+        console.log("[LOG]: Nr dates in calendar: " + this.dates.length);
+        console.log("[LOG]: Dates in calendar: " + this.dates);
+    },
+    /**
+     * Get all the weeks for all the selected months and save them.
+     */
+    getWeeks: function() {
+        console.info("[INFO]: Entering calendar.getWeeks() function");
+
+        var nrDaysToStartMonth = 0;
+        var nrDaysInYear = 0;
+        var nrWeeksInYear = 0;
+        var i = 0;
+        
+        // Get the nr of days up until the start month and for the full year.
+        for (i = 0; i < 12; i++) {
+            if(i < this.startMonthNr) {
+                nrDaysToStartMonth += daysInMonth(this.currentYear, i);
+            }
+            nrDaysInYear += daysInMonth(this.currentYear, i);
+        }
+      
+        this.startWeek = Math.ceil(nrDaysToStartMonth/7);
+        this.nrWeeks = Math.round(this.dates.length/5);
+        nrWeeksInYear = Math.round(nrDaysInYear/7);
+      
+        // If the first month starts on a Sat or Sunday, or if January was selected.
+        if(this.changeStartWeek || this.startMonthNr == 0) {
+            console.log("[LOG]: Changing start week with +1");
+            this.startWeek++;
+        }
+      
+        for(i = this.startWeek; i < (this.nrWeeks + this.startWeek); i++) {
+            if(i > nrWeeksInYear) {
+                this.weeks.push(i - nrWeeksInYear);
+            } else {
+                this.weeks.push(i);
+            } 
+        }
+      
+        /* Calculating weeks depends on the functions ceil() and round(), that
+        *  can make them prone to +-1 errors, therefore log useful info for debugging.
+        */
+        console.log("[LOG]: Nr weeks in the year: "         + nrDaysInYear/7);
+        console.log("[LOG]: Nr weeks in the year .round(): "+ nrWeeksInYear);
+        console.log("[LOG]: Start week: "                   + nrDaysToStartMonth/7);
+        console.log("[LOG]: Start week .ceil(): "           + this.startWeek);
+        console.log("[LOG]: Nr weeks in calendar: "         + this.dates.length/5);
+        console.log("[LOG]: Nr weeks in calendar .round(): "+ this.nrWeeks);
+        console.log("[LOG]: Nr weeks saved: " + this.weeks.length);
+        console.log("[LOG]: Weeks: " + this.weeks);
+    },
+    /**
+     * Get all the names to be put in the calendar and save them.
+     */
+    getNames : function() {
+        console.info("[INFO]: Entering calendar.getNames() function");
+        var name = "";
+        var i = 0;
+        
+        // Loop Through all the names written in the name input fields.
+        for (i = 0; i < this.nrNames; i++){
+            name = document.getElementById("nameInput" + i).value;
+            // Assign a default value if none was given.
+            if(name == ""){
+                name = "Name " + (i+1);
+            }
+            this.names.push(name);
+        }
+        
+        console.log("[LOG]: Nr of names: " + this.names.length);
+        console.log("[LOG]: Names: " + this.names);
+    },
+    /**
+     * Creates and attaches the month, week, date and all the member rows to the calendar.
+     */
+    createRows : function() {
+        console.info("[INFO]: Entering calendar.createRows() function");
+        var cell = null;
+        var allCells = null;
+        var weekColor = "";
+        var nameRows = null;
+        var i = 0, j = 0;
+        
+        this.monthRow = this.tableObj.insertRow(0);
+        this.weekRow = this.tableObj.insertRow(1);
+        this.dateRow = this.tableObj.insertRow(2);
+
+        this.monthRow.id = "monthRow";
+        this.weekRow.id = "weekRow";
+        this.dateRow.id = "dateRow";
+
+        cell = this.monthRow.insertCell(0);
+        cell.innerHTML = "Month";
+        cell = this.weekRow.insertCell(0);
+        cell.innerHTML = "Week";
+        cell = this.dateRow.insertCell(0);
+        cell.innerHTML = "Date";
+
+        // Insert all the months.
+        for(i = 0; i < this.months.length; i++) {
+            cell = this.monthRow.insertCell(-1);
+            cell.innerHTML = this.months[i];
+        }
+
+        // Insert all the weeks.
+        for(i = 0; i < this.weeks.length; i++) {
+            cell = this.weekRow.insertCell(-1);
+            cell.innerHTML = "Week " + this.weeks[i];
+        }
+
+        // Insert all the dates.
+        for(i = 0; i < this.dates.length; i++) {
+            cell = this.dateRow.insertCell(-1);
+            if(this.dates[i] < 10) {
+                cell.innerHTML = "0" + this.dates[i];    
+            } else {
+                cell.innerHTML = this.dates[i];   
+            }
+        }
+        
+        // Insert all the names.
+        for(i = 0; i < this.names.length; i++) {
+            this.nameRows.push(this.tableObj.insertRow(-1));
+            this.nameRows[i].className = this.nameRowClassName;
+            cell = this.nameRows[i].insertCell(-1);
+            cell.innerHTML = this.names[i];
+            
+            for(j = 0; j < this.dates.length; j++) {
+                cell = this.nameRows[i].insertCell(-1);
+            }
+        }
+    },
+    /**
+     * Sets the style of the calendar by calling three minor styling functions.
+     */
+    style : function() {
+        console.info("[INFO]: Entering calendar.style() function");
+        this.styleRows();
+        this.styleCells();
+        this.styleTable();
+    },
+    /**
+     * Sets the style of month, week and date rows.
+     */
+    styleRows : function(){
+        console.info("[INFO]: Entering calendar.styleRows() function");
+        var i = 0;
+        
+        // Change colspan and color the cells for the month row.
+        for(i = 0; i < this.months.length; i++) {
+            this.monthRow.cells[i + 1].colSpan = this.monthsColspan[i];
+            this.monthRow.cells[i + 1].style.backgroundColor = randomColor();
+        }
+
+        // Change colspan (working week is 5 days) and color the cells for the week row.
+        weekColor = randomColor();
+        for(i = 0; i < this.weeks.length; i++) {
+            this.weekRow.cells[i + 1].colSpan = 5;
+            if(i % 2 == 1) {
+                this.weekRow.cells[i].style.backgroundColor = weekColor;
+            } else if(i == this.weeks.length - 1){
+                this.weekRow.cells[i+1].style.backgroundColor = weekColor;
+            }
+        }
+        
+        this.monthRow.style.fontWeight = "bold";
+        this.weekRow.style.fontWeight = "bold";
+        this.dateRow.style.fontWeight = "bold";
+    },
+    /**
+     * Sets the style of all the cells in the calendar.
+     */
+    styleCells : function(){
+        console.info("[INFO]: Entering calendar.styleCells() function");
+        var allCells = null;
+        var cellPadding = "4px 1px 4px 1px";
+        var cellBorder = "1px solid black";
+        var i = 0;
+
+        // Set the padding and border of every cell in the table.
+        allCells = this.tableObj.getElementsByTagName("td");
+        for(i = 0; i < allCells.length; i++) {
+            allCells[i].style.padding = cellPadding;
+            allCells[i].style.border = cellBorder;
+        }
+    },
+    /**
+     * Sets the style of the calendar itself.
+     */
+    styleTable : function(){
+        console.info("[INFO]: Entering calendar.styleTable() function");
+        this.tableObj.style.textAlign = "center";
+        this.tableObj.style.fontFamily = "calibri";
+        this.tableObj.style.width = "100%";
+        this.tableObj.style.borderCollapse = "collapse";
+        this.tableObj.style.whiteSpace = "nowrap";
+        this.tableObj.style.backgroundColor = "white";
+        this.tableObj.style.marginTop = "2%";
+        this.tableObj.style.marginBottom = "2%";
+    },
+    /**
+     * Gets the pasted calendar code from the text area input, parses it and assigns 
+     * it to the table on the page. Then call the functions to enable editing 
+     * on the table.
+     */
+    pasted : function() {
+        // TODO: Set all variables possible in calendar object.
+        console.info("[INFO]: Entering calendar.pasted() function");
+        var calendarTableCode = "";
+        var nameRowsClass = null;
+        var i = 0;
+        
+        // Make sure we start clean.
+        this.reset();
+        
+        calendarTableCode = document.getElementById("editPastedCalendar").value;
+        // Remove everything not inside "<table> </table>" from the pasted text.
+        calendarTableCode = calendarTableCode.substring(calendarTableCode.lastIndexOf("<table"),calendarTableCode.lastIndexOf("</table>")+8);
+        
+        // Assign the pasted code to the table element on the page.
+        this.tableObj.innerHTML = calendarTableCode;
+        
+        // Save the rows so they can be accessed easy later.
+        this.monthRow = document.getElementById("monthRow"); // Not used as of v2.0
+        this.weekRow = document.getElementById("weekRow");  // Noy used as of v2.0    
+        this.dateRow = document.getElementById("dateRow");
+        this.dates = this.dateRow.cells;
+        
+        // Get the number of names in the pasted calendar.
+        nameRowsClass = this.tableObj.getElementsByClassName(this.nameRowClassName);
+        for(i = 0; i < nameRowsClass.length; i++) {
+            this.nameRows.push(nameRowsClass[i]);
+        }
+        
+        // Populate the name array with names from the pasted calendar.
+        for(i = 0; i < this.nameRows.length; i++) {
+            this.names.push(this.nameRows[i].cells[0].innerHTML);
+        }
+        
+        this.styleTable();
+        this.enableEditing();
+        
+        console.log("[LOG]: Nr names found: " + this.names.length);
+        console.log("[LOG]: The names found: " + this.names);
+    },
+    /**
+     * Copies the calendar as text to the clipboard.
+     */
+    copy : function() {
+        console.info("[INFO]: Entering calendar.copy() function");
+        var calendarTableCode = null;
+        var dummy = null;
+        
+        // Get the calendar code as a string.
+        calendarTableCode = this.tableObj.outerHTML;
+        // Remove <tbody></tbody> in code, the wiki doesn't like it for some reason.
+        calendarTableCode = calendarTableCode.replace("<tbody>", "");
+        calendarTableCode = calendarTableCode.replace("</tbody>", "");
+        
+        // Create a dummy input object (.select() only works on text objects). 
+        dummy = document.createElement("input");
+        document.body.appendChild(dummy);
+        dummy.setAttribute("id", "dummyId");
+        dummy.setAttribute('value', calendarTableCode);
+        // Select and copy the code for the calendar.
+        dummy.select();
+        document.execCommand("copy");
+        document.body.removeChild(dummy);
+        
+        console.log("[LOG]: Calendar code has been copied to clipboard");
+    },
+    /**
+     * Enable editing of the calendar through eventlisteners.
+     */
+    enableEditing : function() {
+        console.info("[INFO]: Entering calendar.enableEditing() function");
+        this.addCellListener();
+        this.addDateCellListener();
+        
+        // Display more editing options.
+        displayConfigureNames();
+        displayCopyButton();
+        
+        // Display more information under the calendar.
+        displayInfo();
+    },
+    /**
+     * Add event listeners to the name row cells. Color the cells
+     * when clicked and dragged or just clicked.
+     */
+    addCellListener : function() {
+        console.info("[INFO]: Entering calendar.addCellListener() function");
+        
+        // Find every cell in every name row and assign an eventlistener to it.
+        $("." + this.nameRowClassName).find("td").each(function(index) {
+            // Do not color the first cell in the row (where the name is).
+            if($(this)[0].cellIndex != 0) {
+                // When the mouse is dragged/moved over the cell.
+                $(this).mousemove(function(event) {
+                    // If left mouse button is pressed, color the cell.
+                    if(event.which == 1) {
+                        $(this).css("background", calendar.paletteColor);
+                        $(this).html(calendar.cellLetter);
+                    }
+                });
+                // When the cell is clicked.
+                $(this).on('click', function() {
+                    $(this).css("background", calendar.paletteColor);
+                    $(this).html(calendar.cellLetter);
+                });
+            }
+        });
+    },
+    /**
+     * Add eventlisteners to the date row. When clicked colors the
+     * whole column.
+     */
+    addDateCellListener : function(){
+        console.info("[INFO]: Entering calendar.addDateCellListener() function");
+        var i = 0;
+        
+        // Find each cell in the date row and assign an eventlistener to it.
+        $("#dateRow").find("td").each(function(index) {
+            // Do not color the first cell in the row (where the 'Date' and names are).
+            if(index > 0) {
+                // When the cell is clicked.
+                $(this).on('click', function() {
+                    // Go through all name rows and color the cell in the same column.
+                    for(i = 0; i < calendar.nameRows.length; i++) {
+                        var cellBgColor = calendar.nameRows[i].cells[index].style.background;
+                        if(cellBgColor == "") {
+                            calendar.nameRows[i].cells[index].style.background = "olive";
+                            calendar.nameRows[i].cells[index].innerHTML = "H";
+                        } else { 
+                            calendar.nameRows[i].cells[index].style.background = "";
+                            calendar.nameRows[i].cells[index].innerHTML = "";
+                        }
+                    } 
+                });
+            }
+        });
+    },
+    /**
+     * Add a extra name to the calendar.
+     */
+    addName : function() {
+        console.info("[INFO]: Entering calendar.addName() function");
+        var cell = null;
+        var nameToAdd = document.getElementById("add_destroy_name").value;
+        
+        // Add default name if none was given.
+        if(nameToAdd == ""){
+            nameToAdd = "Name " + (this.names.length + 1);
+        }
+
+        // Add the name to the name list.
+        this.names.push(nameToAdd);
+        // Create a new row and for the new name.
+        this.nameRows.push(this.tableObj.insertRow(-1));
+        this.nameRows[this.nameRows.length - 1].className = this.nameRowClassName;
+        cell = this.nameRows[this.nameRows.length - 1].insertCell(0);
+        cell.innerHTML = nameToAdd;
+        
+        // Create new cells in the row minus the first cell.
+        for(j = 0; j < this.dates.length - 1; j++) {
+            cell = this.nameRows[this.nameRows.length - 1].insertCell(-1);
+        }
+        
+        this.styleCells();
+        this.addCellListener();
+        
+        console.log("[LOG]: Created: " + nameToAdd);
+        console.log("[LOG]: Nr of names: " + this.names.length);
+        console.log("[LOG]: Names: " + this.names);        
+    },
+    /**
+     * Remove a name from the calendar.
+     */
+    destroyName : function() {
+        console.info("[INFO]: Entering calendar.destroyName() function");
+        var nameIndex = -1;
+        var nameToDestroy = document.getElementById("add_destroy_name").value;
+
+        // Search the name array for name to destroy.
+        nameIndex = this.names.indexOf(nameToDestroy);
+
+        // If a match was found.
+        if(nameIndex != -1){
+            // Remove the row from the calendar and remove the name from the name list.
+            this.nameRows[nameIndex].parentNode.removeChild(this.nameRows[nameIndex]);
+            this.nameRows.splice(nameIndex, 1);
+            this.names.splice(nameIndex, 1);
+            
+            console.log("[LOG]: DESTROYED " + nameToDestroy);
+            console.log("[LOG]: Nr of names: " + this.names.length);
+            console.log("[LOG]: Names: " + this.names);
+        } else {
+            console.log("[LOG]: No such name in calendar: " + nameToDestroy);
+        }
+    }
+};
+
+/**
+ * Create and display the name input fields.
+ */
+function addNameFields(){
+    // Get the container (div) where all the name fields will be displayed.
+    var nameFieldContainer = document.getElementById("nameFieldContainer");
+    var inputField = null;
+    var i = 0;
+  
+    // Set the number of names for the calendar object
+    calendar.nrNames = document.getElementById("nrNames").value;
+
+    // Remove previous name fields
+    while(nameFieldContainer.hasChildNodes()) {
+        nameFieldContainer.removeChild(nameFieldContainer.lastChild);
+    }
+
+    // Only allow maxNrNames name fields
+    if(calendar.nrNames <= calendar.maxNrNames) {
+        // Create and append all the input fields
+        for (i = 0; i < calendar.nrNames; i++) {
+            nameFieldContainer.appendChild(document.createTextNode(""));
+            inputField = document.createElement("input");
+            inputField.type = "text";
+            inputField.id = "nameInput" + i;
+            inputField.placeholder = "Name " + (i+1);
+            nameFieldContainer.appendChild(inputField);
+            nameFieldContainer.appendChild(document.createElement("br"));
+        }
+        nameFieldContainer.appendChild(document.createElement("br"));
+    } else {
+        window.alert("Really? That many? I don't think so!");
+    }
+}
+
+/**
+ * Get a random hex color as a string, e.g. "#ffffff".
+ */
+function randomColor() {
+ return "#"+((1<<24)*Math.random()|0).toString(16) ;
+}
+
+/**
+ * Get the number of days in selected month and year.
+ */
+function daysInMonth(year, month) {
+    var d = new Date(year, month + 1, 0);
+    return d.getDate();
+}
+
+$(document).ready(function() {
+  // Initiate the calendar object.
+  calendar.init();
+  
+  // When clicking on the 'Generate' or 'Edit' button, scroll down to the calendar.
+  $(".scroll").on('click', function(event) {
+    $('html, body').animate({
+      scrollTop: $("#calendarTable").offset().top
+    }, 800, function(){
+    });
+  });
+  
+  /* Color picker colors has 'fixed' attribute to be able to expand
+   * it to the right. Set each colors top value so we can see it.
+   */
+  $(".color").each(function(index){
+    $(this).css("top", index * 2 + "em");
+  });
+  
+});
+
+
+/**
+ * Displays the 'copy' button so the calendar code can be copied.
+ */
+function displayCopyButton() {
+  var copyButton = document.getElementById("copyButton");
+  copyButton.style.display = "block";
+}
+
+/**
+ * Displays the information below the generated/pasted calendar for extra help.
+ */
+function displayInfo() {
+  var copyButton = document.getElementById("info");
+  copyButton.style.display = "block";
+}
+
+/**
+ * Displays buttons to add or delete a name from the calendar.
+ */
+function displayConfigureNames() {
+  var div = document.getElementById("configureNames");
+  div.style.display = "flex";
+}
+
+/**
+ * Displays useful help texts besides the elements on the page.
+ */
+function displayHelp() {
+  var helpTexts = document.getElementsByClassName("help_text");
+  
+  helpTexts[0].style.top = $("#editPastedCalendar").offset().top + "px";
+  helpTexts[1].style.top = $("#edit_button").offset().top + "px";
+  helpTexts[2].style.top = $("#nrNames").offset().top - 20 + "px";
+  helpTexts[3].style.top = $("#startMonth").offset().top + "px";
+  helpTexts[4].style.top = $("#generate").offset().top + "px";
+  helpTexts[5].style.top = $("#configureNames").offset().top + "px";
+  
+  for(i = 0; i < helpTexts.length; i++){
+    helpTexts[i].style.display = helpTexts[i].style.display == "block" ? "none" : "block";
+  }
+  
+  if( $("#configureNames").css("display") != "flex" || helpTexts[0].style.display == "none"){
+    helpTexts[5].style.display = "none";
+  }
+  
+  var contact = document.getElementById("contact");
+  contact.style.display = contact.style.display == "block" ? "none" : "block";
+}
+
+/**
+ * Displays the 'copy' button so the calendar code can be copied.
+ */
+function selectColor(color, obj) {
+  calendar.paletteColor = calendar.paletteColorArray[color];
+  calendar.cellLetter = calendar.cellLetterArray[color];
+  
+  // Expand the color div that was pressed.
+  $('.color').css('width','2.5em');
+  obj.style.width = "6em";
+  console.log("Picked color: " + calendar.paletteColor);
+}
+
