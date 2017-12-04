@@ -11,6 +11,7 @@ The calendar contains months, weeks, days and the chosen names.
 
 ## How to
 Download the CalendarGenerator **folder**. </br>
+**Unzip** that folder!. </br>
 Open the **index.html** file in **Google Chrome** (not tested with other browsers). </br>
 Additional help can be displayed by pressing the “Help” button in the top left corner. </br>
 
