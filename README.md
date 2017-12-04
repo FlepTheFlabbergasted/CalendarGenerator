@@ -45,7 +45,7 @@ Appearance of the main panel:
 **2017-11-28 Version 2.0**
 -	Major code change, meaning that this version is not compatible with previous calendar versions. Earlier version will be removed shortly (probably Jan 2018).
 -	Cleaned up code and added (hopefully) more informative log prints.
--	Now the generator automatically removes text that isn’t inside the <table></table> tags when editing an existing calendar. So now you can paste any text (like the whole wiki page text) as long as it contains the calendar and only get the calendar code back.
+-	Now the generator automatically removes text that isn’t inside the \<table\> tags when editing an existing calendar. So now you can paste any text (like the whole wiki page text) as long as it contains the calendar and only get the calendar code back.
 
 ## TODOs
 -	Cross browser support (only tested in Chrome as of v2.0)
