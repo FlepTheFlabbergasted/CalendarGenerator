@@ -14,7 +14,7 @@ Example on generated calendar (minus last month, too wide picture):
 ## How to
 To use the tool, open the following link in **Google Chrome** (not tested/working with other browsers): </br>
 http://htmlpreview.github.io/?https://github.com/Pidlik/CalendarGenerator/blob/master/CalendarGenerator/index.html </br>
-Additional help can be displayed by pressing the “Help” button in the top left corner. </br>
+Additional help can be displayed by pressing the **Help** button in the top left corner. </br>
 
 Appearance of the main panel:
 ![alt text](https://user-images.githubusercontent.com/34168761/33568562-243da988-d927-11e7-83fd-614d44175860.png)
