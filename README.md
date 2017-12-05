@@ -16,7 +16,5 @@ To use the tool, open the following link in **Google Chrome** (not tested/workin
 http://htmlpreview.github.io/?https://github.com/Pidlik/CalendarGenerator/blob/master/CalendarGenerator/index.html </br>
 Additional help can be displayed by pressing the **Help** button in the top left corner. </br>
 
-Appearance of the main panel:
-![alt text](https://user-images.githubusercontent.com/34168761/33568562-243da988-d927-11e7-83fd-614d44175860.png)
-
-<!-- ![alt text](https://user-images.githubusercontent.com/34168761/33568622-5d65fe36-d927-11e7-8a0a-76206eba32b3.png) -->
+Appearance of the tool, help button in the top left corner, main panel in the middle, and the color picker to the right.
+![alt text](https://user-images.githubusercontent.com/34168761/33600021-550de704-d9a8-11e7-960f-aeac85be992f.png)
