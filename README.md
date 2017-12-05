@@ -12,7 +12,7 @@ Example on generated calendar (minus last month, too wide picture):
 **H** with ![##808000](https://placehold.it/15/808000/000000?text=+) Olive background = Public Holiday  </br>
 
 ## How to
-Download the **CalendarGenerator** folder and **unzip** that folder! </br>
+Download the **CalendarGenerator** folder and **unzip** it. Or download the latest release and unzip that! </br>
 Open the **index.html** file in **Google Chrome** (not tested/working with other browsers). </br>
 Additional help can be displayed by pressing the “Help” button in the top left corner. </br>
 
