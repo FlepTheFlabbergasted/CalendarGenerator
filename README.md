@@ -1,4 +1,4 @@
-# CalendarGenerator 2.0
+# CalendarGenerator v2.0.0
 
 Easy to use tool to generate a calendar (html table) for a chosen number of people so that absence can be filled in for specific days.
 The calendar spans 3 months and contains the weeks and days for the duration, as well as the chosen names. Ability to edit previously generated calendars by copying and pasting the html code. You can also add or delete names from previously generated calendars.
