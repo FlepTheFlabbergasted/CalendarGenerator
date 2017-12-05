@@ -1,4 +1,4 @@
-# CalendarGenerator v2.0.0
+# CalendarGenerator
 
 Easy to use tool to generate a calendar (html table) for a chosen number of people so that absence can be filled in for specific days.
 The calendar spans 3 months and contains the weeks and days for the duration, as well as the chosen names. Ability to edit previously generated calendars by copying and pasting the html code. You can also add or delete names from previously generated calendars.
@@ -15,6 +15,8 @@ Example on generated calendar (minus last month, too wide picture):
 To use the tool, open the following link in **Google Chrome** (not tested/working with other browsers): </br>
 [CalendarGenerator Tool](http://htmlpreview.github.io/?https://github.com/Pidlik/CalendarGenerator/blob/master/CalendarGenerator/index.html) </br>
 Additional help can be displayed by pressing the **Help** button in the top left corner. </br>
+
+Be sure to check the latest [releases](https://github.com/Pidlik/CalendarGenerator/releases) for updates! </br>
 
 Appearance of the tool, help button in the top left corner, main panel in the middle, and the color picker to the right.
 ![alt text](https://user-images.githubusercontent.com/34168761/33600021-550de704-d9a8-11e7-960f-aeac85be992f.png)
