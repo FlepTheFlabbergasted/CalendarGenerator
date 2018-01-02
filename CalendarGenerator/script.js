@@ -13,6 +13,15 @@
   console.warn("warn: Test");
 */ 
 
+// Mouse button handling for stupid browsers
+var isMouseDown = false;
+document.addEventListener('mouseup', function(){
+	isMouseDown = false; 
+});
+document.addEventListener('mousedown', function(){
+	isMouseDown = true;
+});
+
 /**
  * Main tableObj object containing info about the calendar and functions to work on the tableObj.
  */
@@ -489,13 +498,14 @@ var calendar = {
             // Do not color the first cell in the row (where the name is).
             if($(this)[0].cellIndex != 0) {
                 // When the mouse is dragged/moved over the cell.
-                $(this).mousemove(function(event) {
-                    // If left mouse button is pressed, color the cell.
-                    if(event.which == 1) {
+                $(this).mousemove(function(e) {
+					// If left mouse button is pressed, color the cell.
+                    if(e.which == 1 && isMouseDown == true) {
                         $(this).css("background", calendar.paletteColor);
                         $(this).html(calendar.cellLetter);
                     }
                 });
+
                 // When the cell is clicked.
                 $(this).on('click', function() {
                     $(this).css("background", calendar.paletteColor);
@@ -632,35 +642,40 @@ function addNameFields(){
  * Get a random hex color as a string, e.g. "#ffffff".
  */
 function randomColor() {
- return "#"+((1<<24)*Math.random()|0).toString(16) ;
+	return "#"+((1<<24)*Math.random()|0).toString(16) ;
 }
 
 /**
  * Get the number of days in selected month and year.
  */
 function daysInMonth(year, month) {
-    var d = new Date(year, month + 1, 0);
-    return d.getDate();
+	var d = new Date(year, month + 1, 0);
+	return d.getDate();
 }
 
 $(document).ready(function() {
-  // Initiate the calendar object.
-  calendar.init();
-  
-  // When clicking on the 'Generate' or 'Edit' button, scroll down to the calendar.
-  $(".scroll").on('click', function(event) {
-    $('html, body').animate({
-      scrollTop: $("#calendarTable").offset().top
-    }, 800, function(){
-    });
-  });
-  
-  /* Color picker colors has 'fixed' attribute to be able to expand
-   * it to the right. Set each colors top value so we can see it.
-   */
-  $(".color").each(function(index){
-    $(this).css("top", index * 2 + "em");
-  });
+	// Check what browser is used
+	if(typeof window.chrome != "object") {
+		window.alert("Calendar Generator only fully tested in Google Chrome.\nMay not work properly with other browsers.");
+	}
+    
+	// Initiate the calendar object.
+	calendar.init();
+
+	// When clicking on the 'Generate' or 'Edit' button, scroll down to the calendar.
+	$(".scroll").on('click', function(event) {
+	$('html, body').animate({
+	  scrollTop: $("#calendarTable").offset().top
+	}, 800, function(){
+	});
+	});
+
+	/* Color picker colors has 'fixed' attribute to be able to expand
+	* it to the right. Set each colors top value so we can see it.
+	*/
+	$(".color").each(function(index){
+	$(this).css("top", index * 2 + "em");
+	});
   
 });
 
