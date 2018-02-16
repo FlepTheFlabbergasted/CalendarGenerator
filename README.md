@@ -13,7 +13,7 @@ Example on generated calendar (minus last month, too wide picture):
 
 ## How to
 To use the tool, open the following link in **Google Chrome** (not tested/working with other browsers): </br>
-[CalendarGenerator Tool](http://htmlpreview.github.io/?https://github.com/Pidlik/CalendarGenerator/blob/master/CalendarGenerator/index.html) </br>
+[CalendarGenerator Tool](https://htmlpreview.github.io/?https://github.com/Pidlik/CalendarGenerator/blob/master/CalendarGenerator/index.html) </br>
 Additional help can be displayed by pressing the **Help** button in the top left corner. </br>
 
 Be sure to check the latest [releases](https://github.com/Pidlik/CalendarGenerator/releases) for updates! </br>
