@@ -50,6 +50,7 @@ var calendar = {
     dateRow: null,
     nameRows: [],
     nameRowClassName: "nameRow",
+    pastedCalendar: false,
 
     /**
      * Main function for generating the table. Called when clicking the "Generate" button.
@@ -102,7 +103,12 @@ var calendar = {
         this.changeStartWeek = false;
         this.monthsColspan = [0,0,0];
         this.dates = [];
-        this.names = [];
+
+        // If the current calendar has not been generated from pasted code, clear the names too
+        if(!this.pastedCalendar) {
+            this.names = [];
+            
+        }
         this.nameRows = [];
     },
 
@@ -267,14 +273,19 @@ var calendar = {
         var name = "";
         var i = 0;
         
-        // Loop Through all the names written in the name input fields.
-        for (i = 0; i < this.nrNames; i++){
-            name = document.getElementById("nameInput" + i).value;
-            // Assign a default value if none was given.
-            if(name == ""){
-                name = "Name " + (i+1);
-            }
+        // If the current calendar has not been generated from pasted code, fetch new names
+        if(!this.pastedCalendar) {
+            // Loop Through all the names written in the name input fields.
+            for (i = 0; i < this.nrNames; i++) {
+                name = document.getElementById("nameInput" + i).value;
+                // Assign a default value if none was given.
+                if(name == "") {
+                    name = "Name " + (i+1);
+                }
             this.names.push(name);
+            }
+        } else {
+            console.log("[LOG]: Pasted calendar, no new names were fetched");    
         }
         
         console.log("[LOG]: Nr of names: " + this.names.length);
@@ -422,6 +433,7 @@ var calendar = {
     pasted : function() {
         // TODO: Set all variables possible in calendar object.
         console.info("[INFO]: Entering calendar.pasted() function");
+
         var calendarTableCode = "";
         var nameRowsClass = null;
         var i = 0;
@@ -438,7 +450,7 @@ var calendar = {
         
         // Save the rows so they can be accessed easy later.
         this.monthRow = document.getElementById("monthRow"); // Not used as of v2.0
-        this.weekRow = document.getElementById("weekRow");  // Noy used as of v2.0    
+        this.weekRow = document.getElementById("weekRow");  // Noy used as of v2.0
         this.dateRow = document.getElementById("dateRow");
         this.dates = this.dateRow.cells;
         
@@ -452,10 +464,10 @@ var calendar = {
         for(i = 0; i < this.nameRows.length; i++) {
             this.names.push(this.nameRows[i].cells[0].innerHTML);
         }
-        
+
         this.styleTable();
         this.enableEditing();
-        
+
         console.log("[LOG]: Nr names found: " + this.names.length);
         console.log("[LOG]: The names found: " + this.names);
     },
@@ -623,6 +635,26 @@ var calendar = {
         } else {
             console.log("[LOG]: No such name in calendar: " + nameToDestroy);
         }
+    },
+
+    /**
+     *  This flag will make sure no name rows are cleared when changing months,
+     *  enabling chaning the months when pasting a calendar, without having to
+     *  manually rewrite the names.
+     *
+     *  Called when pressing the "I just wanna change months" button.
+     */
+    iJustWannaChangeMonths : function () {
+        console.info("[INFO]: Entering calendar.iJustWannaChangeMonths() function");
+        this.pastedCalendar = !this.pastedCalendar;
+        var iJustWannaButton = document.getElementById("iJustWannaChangeMonthsButton");
+        // Darker color (19601c)
+        if(iJustWannaButton.style.background == "rgb(25, 96, 28)") {
+            iJustWannaButton.style.background = "rgb(76, 175, 80)";
+        } else {
+            iJustWannaButton.style.background = "rgb(25, 96, 28)";
+        }
+        console.log("[LOG]: Pasted calendar flag is set to: " + this.pastedCalendar);
     }
 };
 

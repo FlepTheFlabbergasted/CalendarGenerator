@@ -53,9 +53,9 @@
 
 	    <h2>Generate Calendar</h2>
 	    
-	    <div id="setNrNamesContainer">
+	    <div class="buttonContainer">
 	      <input type="text" id="nrNames" name="nrNames" value="" placeholder="Number of team members, 1-99">
-	      <button id="add_fields" class="button" onclick="addNameFields()">Set number of members</button>
+	      <button id="addFields" class="button" onclick="addNameFields()">Set number of members</button>
 	    </div>
 	    
 	    <div id="nameFieldContainer">
@@ -78,7 +78,11 @@
 	    </select>
 	 
 	    
-	    <button id="generate" class="button scroll" onclick="calendar.generate()">Generate</button>
+	   	<div class="buttonContainer">
+		   	<button id="generate" class="button scroll half" onclick="calendar.generate()">Generate</button>
+		    <button id="iJustWannaChangeMonthsButton" class="button half" onclick="calendar.iJustWannaChangeMonths()">I just wanna change months</button>
+	   	</div>
+	    
 	    <div id="configureNames">
 	      <input type="text" id="add_destroy_name" value="" placeholder="Name...">
 	      <button id="addName" class="button small" onclick="calendar.addName()">Add extra name</button>

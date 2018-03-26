@@ -14,7 +14,7 @@ body {
 
 .button {
 	width: 100%;
-	background-color: #4CAF50;
+	background-color: rgb(76, 175, 80);
 	border: none;
 	color: white;
 	//padding: 15px 32px;
@@ -153,24 +153,21 @@ footer {
 	justify-content: space-between;
 }
 
-#setNrNamesContainer {
-	display: block;
-	margin: auto;
+.buttonContainer {
 	width: 100%;
 	display: flex;
-	justify-content: space-between;
 }
 
-#setNrNamesContainer input {
-	width: 50%;
-	display: inline-block;
-	margin-right: 1%;
-}
-
-#setNrNamesContainer button {
-	width: 50%;
-	display: inline-block;
+#iJustWannaChangeMonthsButton {
 	margin-left: 1%;
+	display: inline-block;
+	width: 50%;
+}
+
+#generate {
+	margin-right: 1%;
+	display: inline-block;
+	width: 50%;
 }
 
 #addName {
@@ -186,6 +183,18 @@ footer {
 #add_destroy_name {
 	display: inline-block;
 	width: 33%;
+}
+
+#nrNames {
+	margin-right: 1%;
+	display: inline-block;
+	width: 50%;
+}
+
+#addFields {
+	margin-left: 1%;
+	display: inline-block;
+	width: 50%;
 }
 
 .colorText {
