@@ -56,7 +56,7 @@ var calendar = {
      * Main function for generating the table. Called when clicking the "Generate" button.
      */
     generate : function() {
-        console.info("[INFO]: Entering calendar.generate() function");
+        console.info("[FUNCTION]: Entering calendar.generate()");
 
         // Make sure the table is cleared before generating the new table.
         this.reset();
@@ -79,14 +79,14 @@ var calendar = {
      * Initiate parameters in calendar object that can be set at document load.
      */
     init : function() {
-        console.info("[INFO]: Entering calendar.init() function");
+        console.info("[FUNCTION]: Entering calendar.init()");
         try {
             this.tableObj = document.getElementById("calendarTable");
             this.currentYear = new Date().getFullYear();
             if(!this.tableObj) throw "Could not get calendar tableObj";
             if(!this.currentYear) throw "Could not set current year";
         } catch(err) {
-            console.error("init() function threw error: " + err);
+            console.error("init() threw error: " + err);
         }
     },
 
@@ -94,7 +94,7 @@ var calendar = {
      * Clear the table to be able to generate next table and reset some parameters.
      */
     reset : function() {
-        console.info("[INFO]: Entering calendar.reset() function");
+        console.info("[FUNCTION]: Entering calendar.reset()");
         while(this.tableObj.hasChildNodes()) {
             this.tableObj.removeChild(this.tableObj.lastChild);
         }
@@ -116,13 +116,13 @@ var calendar = {
      * Get months from the select element in the html file, save start month number and months.
      */
     getMonths : function() {
-        console.info("[INFO]: Entering calendar.getMonths() function");
+        console.info("[FUNCTION]: Entering calendar.getMonths()");
         var i = 0;
         try {
             this.startMonthNr = parseInt(document.getElementById("startMonth").value, 10);
             if(this.startMonthNr < 0) throw "Start month is less than zero";
         } catch(err) {
-            console.error("getMonths() function threw error: " + err);
+            console.error("getMonths() threw error: " + err);
         }      
         finally {
             // Save the names for all the months in an array of strings.
@@ -143,7 +143,7 @@ var calendar = {
      * Get all the dates for all the selected months and save them.
      */
     getDates: function() {
-        console.info("[INFO]: Entering calendar.getDates() function");
+        console.info("[FUNCTION]: Entering calendar.getDates()");
         // The first week can contain days from previous month and requires special handling.
         var firstWeekInMonth = true;
 
@@ -219,7 +219,7 @@ var calendar = {
      * Get all the weeks for all the selected months and save them.
      */
     getWeeks: function() {
-        console.info("[INFO]: Entering calendar.getWeeks() function");
+        console.info("[FUNCTION]: Entering calendar.getWeeks()");
 
         var nrDaysToStartMonth = 0;
         var nrDaysInYear = 0;
@@ -269,7 +269,7 @@ var calendar = {
      * Get all the names to be put in the calendar and save them.
      */
     getNames : function() {
-        console.info("[INFO]: Entering calendar.getNames() function");
+        console.info("[FUNCTION]: Entering calendar.getNames()");
         var name = "";
         var i = 0;
         
@@ -296,7 +296,7 @@ var calendar = {
      * Creates and attaches the month, week, date and all the member rows to the calendar.
      */
     createRows : function() {
-        console.info("[INFO]: Entering calendar.createRows() function");
+        console.info("[FUNCTION]: Entering calendar.createRows()");
         var cell = null;
         var allCells = null;
         var weekColor = "";
@@ -357,7 +357,7 @@ var calendar = {
      * Sets the style of the calendar by calling three minor styling functions.
      */
     style : function() {
-        console.info("[INFO]: Entering calendar.style() function");
+        console.info("[FUNCTION]: Entering calendar.style()");
         this.styleRows();
         this.styleCells();
         this.styleTable();
@@ -367,7 +367,7 @@ var calendar = {
      * Sets the style of month, week and date rows.
      */
     styleRows : function(){
-        console.info("[INFO]: Entering calendar.styleRows() function");
+        console.info("[FUNCTION]: Entering calendar.styleRows()");
         var i = 0;
         
         // Change colspan and color the cells for the month row.
@@ -396,7 +396,7 @@ var calendar = {
      * Sets the style of all the cells in the calendar.
      */
     styleCells : function(){
-        console.info("[INFO]: Entering calendar.styleCells() function");
+        console.info("[FUNCTION]: Entering calendar.styleCells()");
         var allCells = null;
         var cellPadding = "4px 1px 4px 1px";
         var cellBorder = "1px solid black";
@@ -414,7 +414,7 @@ var calendar = {
      * Sets the style of the calendar itself.
      */
     styleTable : function(){
-        console.info("[INFO]: Entering calendar.styleTable() function");
+        console.info("[FUNCTION]: Entering calendar.styleTable()");
         this.tableObj.style.textAlign = "center";
         this.tableObj.style.fontFamily = "calibri";
         this.tableObj.style.width = "100%";
@@ -432,7 +432,7 @@ var calendar = {
      */
     pasted : function() {
         // TODO: Set all variables possible in calendar object.
-        console.info("[INFO]: Entering calendar.pasted() function");
+        console.info("[FUNCTION]: Entering calendar.pasted()");
 
         var calendarTableCode = "";
         var nameRowsClass = null;
@@ -476,7 +476,7 @@ var calendar = {
      * Copies the calendar as text to the clipboard.
      */
     copy : function() {
-        console.info("[INFO]: Entering calendar.copy() function");
+        console.info("[FUNCTION]: Entering calendar.copy()");
         var calendarTableCode = null;
         var dummy = null;
         
@@ -506,7 +506,7 @@ var calendar = {
      * Enable editing of the calendar through eventlisteners.
      */
     enableEditing : function() {
-        console.info("[INFO]: Entering calendar.enableEditing() function");
+        console.info("[FUNCTION]: Entering calendar.enableEditing()");
         this.addCellListener();
         this.addDateCellListener();
         
@@ -523,7 +523,7 @@ var calendar = {
      * when clicked and dragged or just clicked.
      */
     addCellListener : function() {
-        console.info("[INFO]: Entering calendar.addCellListener() function");
+        console.info("[FUNCTION]: Entering calendar.addCellListener()");
         
         // Find every cell in every name row and assign an eventlistener to it.
         $("." + this.nameRowClassName).find("td").each(function(index) {
@@ -552,7 +552,7 @@ var calendar = {
      * whole column.
      */
     addDateCellListener : function(){
-        console.info("[INFO]: Entering calendar.addDateCellListener() function");
+        console.info("[FUNCTION]: Entering calendar.addDateCellListener()");
         var i = 0;
         
         // Find each cell in the date row and assign an eventlistener to it.
@@ -581,7 +581,7 @@ var calendar = {
      * Add a extra name to the calendar.
      */
     addName : function() {
-        console.info("[INFO]: Entering calendar.addName() function");
+        console.info("[FUNCTION]: Entering calendar.addName()");
         var cell = null;
         var nameToAdd = document.getElementById("add_destroy_name").value;
         
@@ -615,7 +615,7 @@ var calendar = {
      * Remove a name from the calendar.
      */
     destroyName : function() {
-        console.info("[INFO]: Entering calendar.destroyName() function");
+        console.info("[FUNCTION]: Entering calendar.destroyName()");
         var nameIndex = -1;
         var nameToDestroy = document.getElementById("add_destroy_name").value;
 
@@ -645,7 +645,7 @@ var calendar = {
      *  Called when pressing the "I just wanna change months" button.
      */
     iJustWannaChangeMonths : function () {
-        console.info("[INFO]: Entering calendar.iJustWannaChangeMonths() function");
+        console.info("[FUNCTION]: Entering calendar.iJustWannaChangeMonths()");
         this.pastedCalendar = !this.pastedCalendar;
         var iJustWannaButton = document.getElementById("iJustWannaChangeMonthsButton");
         // Darker color (19601c)
