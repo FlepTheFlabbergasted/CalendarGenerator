@@ -52,6 +52,29 @@ var calendar = {
     nameRowClassName: "nameRow",
 
     /**
+     * Main function for generating the table. Called when clicking the "Generate" button.
+     */
+    generate : function() {
+        console.info("[INFO]: Entering calendar.generate() function");
+
+        // Make sure the table is cleared before generating the new table.
+        this.reset();
+
+        /* Get the months, weeks, days and all the member's names.
+        * Weeks are calculated by the days, therefore we retreive them first.
+        */
+        this.getMonths();
+        this.getDates();
+        this.getWeeks();
+        this.getNames();
+
+        this.createRows();
+        this.style();
+        
+        this.enableEditing();
+    },
+
+    /**
      * Initiate parameters in calendar object that can be set at document load.
      */
     init : function() {
@@ -81,28 +104,6 @@ var calendar = {
         this.dates = [];
         this.names = [];
         this.nameRows = [];
-    },
-
-    /**
-     * Main function for generating the table.
-     */
-    generate : function() {
-        console.info("[INFO]: Entering calendar.generate() function");
-        // Make sure the table is cleared before generating the new table.
-        this.reset();
-
-        /* Get the months, weeks, days and all the member's names.
-        * Weeks are calculated by the days, therefore we retreive them first.
-        */
-        this.getMonths();
-        this.getDates();
-        this.getWeeks();
-        this.getNames();
-
-        this.createRows();
-        this.style();
-        
-        this.enableEditing();
     },
 
     /**
@@ -483,6 +484,9 @@ var calendar = {
         document.execCommand("copy");
         document.body.removeChild(dummy);
         
+        // Flash the copy button
+        fadeOutnIn($('#copyButton'), 50);
+
         console.log("[LOG]: Calendar code has been copied to clipboard");
     },
 
@@ -768,4 +772,9 @@ function selectColor(color, obj) {
   obj.style.width = "7em";
   $( obj ).find( '.colorText' ).css("right", "7.5em");
   console.log("Picked color: " + calendar.paletteColor);
+}
+
+function fadeOutnIn(obj, speed) {
+    obj.animate({opacity:0.3}, speed);
+    obj.animate({opacity:1}, speed);
 }
