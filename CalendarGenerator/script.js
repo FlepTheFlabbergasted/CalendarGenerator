@@ -13,7 +13,7 @@
   console.warn("warn: Test");
 */ 
 
-// Mouse button handling for stupid browsers
+// Mouse button handling for stupid browsers (Like, really Firefox, really!?)
 var isMouseDown = false;
 document.addEventListener('mouseup', function(){
 	isMouseDown = false; 
@@ -50,6 +50,7 @@ var calendar = {
     dateRow: null,
     nameRows: [],
     nameRowClassName: "nameRow",
+
     /**
      * Initiate parameters in calendar object that can be set at document load.
      */
@@ -64,6 +65,7 @@ var calendar = {
             console.error("init() function threw error: " + err);
         }
     },
+
     /**
      * Clear the table to be able to generate next table and reset some parameters.
      */
@@ -80,6 +82,7 @@ var calendar = {
         this.names = [];
         this.nameRows = [];
     },
+
     /**
      * Main function for generating the table.
      */
@@ -101,6 +104,7 @@ var calendar = {
         
         this.enableEditing();
     },
+
     /**
      * Get months from the select element in the html file, save start month number and months.
      */
@@ -127,6 +131,7 @@ var calendar = {
             console.log("[LOG]: Months in calendar: " + this.months);
         }
     },
+
     /**
      * Get all the dates for all the selected months and save them.
      */
@@ -202,6 +207,7 @@ var calendar = {
         console.log("[LOG]: Nr dates in calendar: " + this.dates.length);
         console.log("[LOG]: Dates in calendar: " + this.dates);
     },
+
     /**
      * Get all the weeks for all the selected months and save them.
      */
@@ -251,6 +257,7 @@ var calendar = {
         console.log("[LOG]: Nr weeks saved: " + this.weeks.length);
         console.log("[LOG]: Weeks: " + this.weeks);
     },
+
     /**
      * Get all the names to be put in the calendar and save them.
      */
@@ -272,6 +279,7 @@ var calendar = {
         console.log("[LOG]: Nr of names: " + this.names.length);
         console.log("[LOG]: Names: " + this.names);
     },
+
     /**
      * Creates and attaches the month, week, date and all the member rows to the calendar.
      */
@@ -332,6 +340,7 @@ var calendar = {
             }
         }
     },
+
     /**
      * Sets the style of the calendar by calling three minor styling functions.
      */
@@ -341,6 +350,7 @@ var calendar = {
         this.styleCells();
         this.styleTable();
     },
+
     /**
      * Sets the style of month, week and date rows.
      */
@@ -369,6 +379,7 @@ var calendar = {
         this.weekRow.style.fontWeight = "bold";
         this.dateRow.style.fontWeight = "bold";
     },
+
     /**
      * Sets the style of all the cells in the calendar.
      */
@@ -386,6 +397,7 @@ var calendar = {
             allCells[i].style.border = cellBorder;
         }
     },
+
     /**
      * Sets the style of the calendar itself.
      */
@@ -400,6 +412,7 @@ var calendar = {
         this.tableObj.style.marginTop = "2%";
         this.tableObj.style.marginBottom = "2%";
     },
+
     /**
      * Gets the pasted calendar code from the text area input, parses it and assigns 
      * it to the table on the page. Then call the functions to enable editing 
@@ -445,6 +458,7 @@ var calendar = {
         console.log("[LOG]: Nr names found: " + this.names.length);
         console.log("[LOG]: The names found: " + this.names);
     },
+
     /**
      * Copies the calendar as text to the clipboard.
      */
@@ -471,6 +485,7 @@ var calendar = {
         
         console.log("[LOG]: Calendar code has been copied to clipboard");
     },
+
     /**
      * Enable editing of the calendar through eventlisteners.
      */
@@ -486,6 +501,7 @@ var calendar = {
         // Display more information under the calendar.
         displayInfo();
     },
+
     /**
      * Add event listeners to the name row cells. Color the cells
      * when clicked and dragged or just clicked.
@@ -514,6 +530,7 @@ var calendar = {
             }
         });
     },
+
     /**
      * Add eventlisteners to the date row. When clicked colors the
      * whole column.
@@ -543,6 +560,7 @@ var calendar = {
             }
         });
     },
+
     /**
      * Add a extra name to the calendar.
      */
@@ -576,6 +594,7 @@ var calendar = {
         console.log("[LOG]: Nr of names: " + this.names.length);
         console.log("[LOG]: Names: " + this.names);        
     },
+
     /**
      * Remove a name from the calendar.
      */
@@ -664,19 +683,25 @@ $(document).ready(function() {
 
 	// When clicking on the 'Generate' or 'Edit' button, scroll down to the calendar.
 	$(".scroll").on('click', function(event) {
-	$('html, body').animate({
-	  scrollTop: $("#calendarTable").offset().top
-	}, 800, function(){
-	});
+    	$('html, body').animate({
+    	  scrollTop: $("#calendarTable").offset().top
+    	}, 800, function(){
+    	});
 	});
 
 	/* Color picker colors has 'fixed' attribute to be able to expand
 	* it to the right. Set each colors top value so we can see it.
 	*/
-	$(".color").each(function(index){
-	$(this).css("top", index * 2 + "em");
-	});
-  
+    $(".color").each(function(index) {
+        $(this).css("top", index * 2 + "em");
+
+        // Select red color from the start
+        if(index == 1) {
+            selectColor(1, this);
+        }
+    });
+
+
 });
 
 
@@ -736,9 +761,11 @@ function selectColor(color, obj) {
   calendar.paletteColor = calendar.paletteColorArray[color];
   calendar.cellLetter = calendar.cellLetterArray[color];
   
-  // Expand the color div that was pressed.
-  $('.color').css('width','2.5em');
-  obj.style.width = "6em";
+  // Expand the color div and colorText span that was pressed and retract the other colors.
+  $('.color').css('width','4em');
+  $('.colorText').css('right','4.5em');
+
+  obj.style.width = "7em";
+  $( obj ).find( '.colorText' ).css("right", "7.5em");
   console.log("Picked color: " + calendar.paletteColor);
 }
-

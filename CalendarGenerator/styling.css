@@ -1,207 +1,212 @@
 
-  * {
-    box-sizing: border-box;
-  }
-  
-  body {
-    width: 100%;
-    height: auto;
-    padding: 0;
-    margin: 0;
-    font-family: Arial, Helvetica, sans-serif;
-    position: relative;
-  }
-  
-  .button {
-    width: 100%;
-    background-color: #4CAF50;
-    border: none;
-    color: white;
-    //padding: 15px 32px;
-    padding: 12px 20px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 16px;
-    cursor: pointer;
-    border-radius: 4px;
-    margin: 1%;
-    margin-left: 0;
-    margin-right: 0;
-  }
-  
-  .small{
-    max-width: 30%;
-  }
-  
-  .cursor_pointer {
-    cursor: pointer;
-  }
-  
-  
-  .button:hover {
-    background-color: #45a049;
-  }
-  
-  input[type=text], select , start_month, textarea{
-    width: 100%;
-    padding: 12px 20px;
-    margin: 1%;
-    margin-left: 0;
-    margin-right: 0;
-    display: inline-block;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    box-sizing: border-box;
-  }
+* {
+	box-sizing: border-box;
+}
 
-  #main_container {
-    max-width: 50%;
-    box-shadow: 0px 4px 12px 1px #888888;
-    margin: auto;
-    padding: 1%;
-    border-radius: 0 0 4px 4px;
-    background-color: #f2f2f2;
-  }
-  
-  textarea {
-    height: 75px;
-    resize: none;
-  }
-  
-  h1, h2, h3, h4, h5 {
-    text-align: center;
-    margin: 0;
-  }
-  
-  footer { 
-    font-size: 80%;
-    position: relative;
-    top: 1%;
-    left: 1%;
-    //margin: 1%;
-  }
-  
-  #info {
-    margin: 1%;
-  }
-  
-  #info h3 span {
-    padding: 0.5%;
-  }
-  
-  #help_button {
-    float: left;
-    height: 40px;
-    padding: 10px;
-    background-color: #4CAF50;
-    color: white;
-    border: none;
-    text-align: center;
-    cursor: pointer;
-    margin: 0;
-    display: block;
-  }
-  
-  #help_button:hover {
-    background-color: #45a049;
-  }
-  
-  #help_text_container {
-    max-width: 23%;
-    display: none;
-    float: left;
-    position: absolute;
-    top: 20px;
-    border: 1px solid red;
-    word-wrap:break-word;
-    font-size: 75%;
-  }
-  
-  .help_text {
-    max-width: 22%;
-    display: none;
-    float: left;
-    position: absolute;
-    top: 20px;
-    word-wrap:break-word;
-    font-size: 80%;
-    font-weight: bold;
-    margin-left: 1%;
-    z-index: 100;
-  }
-  
-  #contact {
-    margin: 10px;
-    color: black;
-    float: right;
-    font-size: 70%;
-    display: none;
-  }
-  
-  #color_picker_container{
-    cursor: pointer;
-    position: fixed;
-    top: 25%;
-    right: 0;
-    margin-right: -2px;
-  }
-  
-  #configureNames {
-    display: block;
-    margin: auto;
-    width: 100%;
-    display: none;
-    justify-content: space-between;
-  }
-  
-  #setNrNamesContainer {
-    display: block;
-    margin: auto;
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-  }
-  
-  #setNrNamesContainer input {
-    width: 50%;
-    display: inline-block;
-    margin-right: 1%;
-  }
-  
-  #setNrNamesContainer button {
-    width: 50%;
-    display: inline-block;
-    margin-left: 1%;
-  }
-  
-  #addName {
-    display: inline-block;
-    width: 33%;
-  }
-  
-  #destroyName {
-    display: inline-block;
-    width: 33%;
-  }
-  
-  #add_destroy_name {
-    display: inline-block;
-    width: 33%;
-  }
-  
-  .color {
-    width: 2.5em;
-    height: 2.5em;
-    border: 1px solid black;
-    position: absolute;
-    -webkit-transition: width .2s;
-    right: 0;
-  }
-  
-  .color span {
-    display: inline-block;
-    vertical-align: middle;
-    display: none;
-  }
-  
+body {
+	width: 100%;
+	height: auto;
+	padding: 0;
+	margin: 0;
+	font-family: Arial, Helvetica, sans-serif;
+	position: relative;
+}
+
+.button {
+	width: 100%;
+	background-color: #4CAF50;
+	border: none;
+	color: white;
+	//padding: 15px 32px;
+	padding: 12px 20px;
+	text-align: center;
+	text-decoration: none;
+	display: inline-block;
+	font-size: 16px;
+	cursor: pointer;
+	border-radius: 4px;
+	margin: 1%;
+	margin-left: 0;
+	margin-right: 0;
+}
+
+.small{
+	max-width: 30%;
+}
+
+.cursor_pointer {
+	cursor: pointer;
+}
+
+
+.button:hover {
+	background-color: #45a049;
+}
+
+input[type=text], select , start_month, textarea{
+	width: 100%;
+	padding: 12px 20px;
+	margin: 1%;
+	margin-left: 0;
+	margin-right: 0;
+	display: inline-block;
+	border: 1px solid #ccc;
+	border-radius: 4px;
+	box-sizing: border-box;
+}
+
+#main_container {
+	max-width: 50%;
+	box-shadow: 0px 4px 12px 1px #888888;
+	margin: auto;
+	padding: 1%;
+	border-radius: 0 0 4px 4px;
+	background-color: #f2f2f2;
+}
+
+textarea {
+	height: 75px;
+	resize: none;
+}
+
+h1, h2, h3, h4, h5 {
+	text-align: center;
+	margin: 0;
+}
+
+footer { 
+	font-size: 80%;
+	position: relative;
+	top: 1%;
+	left: 1%;
+}
+
+#info {
+	margin: 1%;
+}
+
+#info h3 span {
+	padding: 0.5%;
+}
+
+#help_button {
+	float: left;
+	height: 40px;
+	padding: 10px;
+	background-color: #4CAF50;
+	color: white;
+	border: none;
+	text-align: center;
+	cursor: pointer;
+	margin: 0;
+	display: block;
+}
+
+#help_button:hover {
+	background-color: #45a049;
+}
+
+#help_text_container {
+	max-width: 23%;
+	display: none;
+	float: left;
+	position: absolute;
+	top: 20px;
+	border: 1px solid red;
+	word-wrap:break-word;
+	font-size: 75%;
+}
+
+.help_text {
+	max-width: 22%;
+	display: none;
+	float: left;
+	position: absolute;
+	top: 20px;
+	word-wrap:break-word;
+	font-size: 80%;
+	font-weight: bold;
+	margin-left: 1%;
+	z-index: 100;
+}
+
+#contact {
+	margin: 10px;
+	color: black;
+	float: right;
+	font-size: 70%;
+	display: none;
+}
+
+#color_picker_container{
+	cursor: pointer;
+	position: fixed;
+	top: 25%;
+	right: 0;
+	margin-right: -2px;
+}
+
+#configureNames {
+	display: block;
+	margin: auto;
+	width: 100%;
+	display: none;
+	justify-content: space-between;
+}
+
+#setNrNamesContainer {
+	display: block;
+	margin: auto;
+	width: 100%;
+	display: flex;
+	justify-content: space-between;
+}
+
+#setNrNamesContainer input {
+	width: 50%;
+	display: inline-block;
+	margin-right: 1%;
+}
+
+#setNrNamesContainer button {
+	width: 50%;
+	display: inline-block;
+	margin-left: 1%;
+}
+
+#addName {
+	display: inline-block;
+	width: 33%;
+}
+
+#destroyName {
+	display: inline-block;
+	width: 33%;
+}
+
+#add_destroy_name {
+	display: inline-block;
+	width: 33%;
+}
+
+.colorText {
+	position: absolute;
+	right: 4.5em;
+	top: 25%;
+	font-weight: bold;
+	display: none;
+	-webkit-transition: right .2s;
+}
+
+.color {
+	width: 4em;
+	height: 2.5em;
+	border: 1px solid black;
+	position: absolute;
+	-webkit-transition: width .2s;
+	right: 0;
+}
+
+.color:hover .colorText, .color.hover .colorText { 
+	display: block;
+}
