@@ -36,6 +36,7 @@ var calendar = {
     weeks: [],
     startWeek: -1,
     nrWeeks: -1,
+    firstWeekDayMonday: false,
     changeStartWeek: false,
     dates: [],
     names: [],
@@ -101,13 +102,13 @@ var calendar = {
         this.months = [];
         this.weeks = [];
         this.changeStartWeek = false;
+        this.firstWeekDayMonday = false;
         this.monthsColspan = [0,0,0];
         this.dates = [];
 
         // If the current calendar has not been generated from pasted code, clear the names too
         if(!this.pastedCalendar) {
             this.names = [];
-            
         }
         this.nameRows = [];
     },
@@ -181,15 +182,19 @@ var calendar = {
                     dayOfWeek = new Date(this.currentYear + 1, monthOverflow - 1, day).getDay();
                 }
           
-                // Sunday = 0, Saturday = 6
+                // Saturday = 6, Sunday = 0, Monday = 1
                 if(firstWeekInMonth) {
                     if(dayOfWeek != 1) {
-                        /* If start of month is on a Saturday or Sunday the starting week needs to be 
-                        * moved forward 1 week to get correct date and week matching.
+                        /* If start of month is on a Saturday or Sunday the starting week needs to be
+                        * moved forward 1 week to get correct date and week matching. This is because this
+                        * calendar only deals with workdays and when the month starts with a weekend those
+                        * weekend days is in the previous week (that we don't care about) causing a -1 diff 
+                        * for the starting week. 
+                        * TODO: tl;dr
                         */
                         if(dayOfWeek == 0 || dayOfWeek == 6) {
                             this.changeStartWeek = true;
-                            console.log("[LOG]: Start week to be changed");
+                            console.log("[LOG]: Month starts with Sat/Sun, start week to be changed");
                         } else {
                             // Insert the missing days in the week from the last month.
                             previousMonthDate = nrDaysPreviousMonth - (dayOfWeek - 2);
@@ -199,6 +204,11 @@ var calendar = {
                                 this.monthsColspan[monthsColspanCounter]++;
                             }
                         }
+                    } else {
+                        /* First day of the moth is a monday, save this flag to later check if the starting
+                         * week needs to be changed.
+                         */
+                        this.firstWeekDayMonday = true;
                     }
                     firstWeekInMonth = false;
                 }
@@ -238,9 +248,15 @@ var calendar = {
         this.nrWeeks = Math.round(this.dates.length/5);
         nrWeeksInYear = Math.round(nrDaysInYear/7);
       
-        // If the first month starts on a Sat or Sunday, or if January was selected.
+        /* If the first month starts on a Sat or Sunday, or if January was selected.
+         * Alternatively if the month starts with a monday and the day of the year is evenly divided by 7.
+         */
         if(this.changeStartWeek || this.startMonthNr == 0) {
             console.log("[LOG]: Changing start week with +1");
+            this.startWeek++;
+        } else if (this.firstWeekDayMonday && (nrDaysToStartMonth % 7 == 0)) {
+            // This shit only happens once or twice a year: https://www.timeanddate.com/calendar/weekday-monday-1
+            console.log("[LOG]: Month starts with Monday and day of the year is evenly dividable by 7, start week +1");
             this.startWeek++;
         }
       
@@ -258,7 +274,7 @@ var calendar = {
         console.log("[LOG]: Nr weeks in the year: "         + nrDaysInYear/7);
         console.log("[LOG]: Nr weeks in the year .round(): "+ nrWeeksInYear);
         console.log("[LOG]: Start week: "                   + nrDaysToStartMonth/7);
-        console.log("[LOG]: Start week .ceil(): "           + this.startWeek);
+        console.log("[LOG]: Start week.ceil(): "            + this.startWeek);
         console.log("[LOG]: Nr weeks in calendar: "         + this.dates.length/5);
         console.log("[LOG]: Nr weeks in calendar .round(): "+ this.nrWeeks);
         console.log("[LOG]: Nr weeks saved: " + this.weeks.length);
