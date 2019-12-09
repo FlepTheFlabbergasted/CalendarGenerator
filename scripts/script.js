@@ -655,7 +655,7 @@ var calendar = {
 
     /**
      *  This flag will make sure no name rows are cleared when changing months,
-     *  enabling chaning the months when pasting a calendar, without having to
+     *  enabling changing the months when pasting a calendar, without having to
      *  manually rewrite the names.
      *
      *  Called when pressing the "I just wanna change months" button.
