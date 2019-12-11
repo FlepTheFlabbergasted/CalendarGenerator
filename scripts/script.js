@@ -475,7 +475,8 @@ var calendar = {
         for(i = 0; i < nameRowsClass.length; i++) {
             this.nameRows.push(nameRowsClass[i]);
         }
-        
+        // Needs to be reset here otherwise names get duplicated every time edit is pressed.
+        this.names = [];
         // Populate the name array with names from the pasted calendar.
         for(i = 0; i < this.nameRows.length; i++) {
             this.names.push(this.nameRows[i].cells[0].innerHTML);
