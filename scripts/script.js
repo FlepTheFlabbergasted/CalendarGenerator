@@ -674,41 +674,6 @@ var calendar = {
 };
 
 /**
- * Create and display the name input fields.
- */
-function addNameFields(){
-    // Get the container (div) where all the name fields will be displayed.
-    var nameFieldContainer = document.getElementById("nameFieldContainer");
-    var inputField = null;
-    var i = 0;
-  
-    // Set the number of names for the calendar object
-    calendar.nrNames = document.getElementById("nrNames").value;
-
-    // Remove previous name fields
-    while(nameFieldContainer.hasChildNodes()) {
-        nameFieldContainer.removeChild(nameFieldContainer.lastChild);
-    }
-
-    // Only allow maxNrNames name fields
-    if(calendar.nrNames <= calendar.maxNrNames) {
-        // Create and append all the input fields
-        for (i = 0; i < calendar.nrNames; i++) {
-            nameFieldContainer.appendChild(document.createTextNode(""));
-            inputField = document.createElement("input");
-            inputField.type = "text";
-            inputField.id = "nameInput" + i;
-            inputField.placeholder = "Name " + (i+1);
-            nameFieldContainer.appendChild(inputField);
-            nameFieldContainer.appendChild(document.createElement("br"));
-        }
-        nameFieldContainer.appendChild(document.createElement("br"));
-    } else {
-        window.alert("Really? That many? I don't think so!");
-    }
-}
-
-/**
  * Get a random hex color as a string, e.g. "#ffffff".
  */
 function randomColor() {
@@ -788,17 +753,16 @@ function displayHelp() {
   
   helpTexts[0].style.top = $("#editPastedCalendar").offset().top + "px";
   helpTexts[1].style.top = $("#edit_button").offset().top + "px";
-  helpTexts[2].style.top = $("#nrNames").offset().top - 20 + "px";
-  helpTexts[3].style.top = $("#startMonth").offset().top + "px";
-  helpTexts[4].style.top = $("#generate").offset().top + "px";
-  helpTexts[5].style.top = $("#configureNames").offset().top + "px";
+  helpTexts[2].style.top = $("#startMonth").offset().top + "px";
+  helpTexts[3].style.top = $("#generate").offset().top + "px";
+  helpTexts[4].style.top = $("#configureNames").offset().top + "px";
   
   for(i = 0; i < helpTexts.length; i++){
     helpTexts[i].style.display = helpTexts[i].style.display == "block" ? "none" : "block";
   }
   
   if( $("#configureNames").css("display") != "flex" || helpTexts[0].style.display == "none"){
-    helpTexts[5].style.display = "none";
+    helpTexts[4].style.display = "none";
   }
   
   var contact = document.getElementById("contact");

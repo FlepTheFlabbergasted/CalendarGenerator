@@ -17,7 +17,6 @@ body {
 	background-color: rgb(76, 175, 80);
 	border: none;
 	color: white;
-	//padding: 15px 32px;
 	padding: 12px 20px;
 	text-align: center;
 	text-decoration: none;
@@ -183,18 +182,6 @@ footer {
 #add_destroy_name {
 	display: inline-block;
 	width: 33%;
-}
-
-#nrNames {
-	margin-right: 1%;
-	display: inline-block;
-	width: 50%;
-}
-
-#addFields {
-	margin-left: 1%;
-	display: inline-block;
-	width: 50%;
 }
 
 .colorText {

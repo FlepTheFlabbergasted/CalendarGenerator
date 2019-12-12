@@ -22,13 +22,13 @@
 	<button id="help_button" onclick="displayHelp()">Help</button>
 	<p class="help_text">To edit a existing calendar, copy the existing calendar code from the wiki and paste here &#8594;</p>
 	<p class="help_text">Click here to display the calendar at the bottom of this page, then click in the cells to change the color of it &#8594;</p>
-	<p class="help_text">Write the number of members in your team here. Then click the "Set..." button to show the slots where you can write in all the names for the team members &#8594;</p>
 	<p class="help_text">Here you select the starting month for the calendar, the calendar will be your selected month plus the two months after &#8594;</p>
 	<p class="help_text">When you have filled in everything you want above, click here to show your calendar. Click multiple times to change header color! &#8594;</p>
-	<p class="help_text">Here you can either add or delete a member to an existing calendar &#8594;</p>
+	<p class="help_text">Here you can either add or delete an name to the calendar &#8594;</p>
   
 	<div id="contact">
 	<p>2017-10-18 Filip Strandberg</p>
+    <a href="https://github.com/Pidlik/CalendarGenerator" target="_blank">GitHub</a>
 	</div>
 
 	<div id="color_picker_container">
@@ -52,14 +52,6 @@
 	    <hr>
 
 	    <h2>Generate Calendar</h2>
-	    
-	    <div class="buttonContainer">
-	      <input type="text" id="nrNames" name="nrNames" value="" placeholder="Number of team members, 1-99">
-	      <button id="addFields" class="button" onclick="addNameFields()">Set number of members</button>
-	    </div>
-	    
-	    <div id="nameFieldContainer">
-	    </div>
 	    
 	    <label for="startMonth">From Month</label>
 	    <select id="startMonth" name="startMonth">
@@ -85,7 +77,7 @@
 	    
 	    <div id="configureNames">
 	      <input type="text" id="add_destroy_name" value="" placeholder="Name...">
-	      <button id="addName" class="button small" onclick="calendar.addName()">Add extra name</button>
+	      <button id="addName" class="button small" onclick="calendar.addName()">Add name</button>
 	      <button id="destroyName" class="button small" onclick="calendar.destroyName()">Delete name</button>
 	    </div>
 	    <button id="copyButton" class="button" style="display:none" onclick="calendar.copy()">Copy HTML to clipboard</button>
