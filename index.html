@@ -1,110 +1,110 @@
 <!DOCTYPE HTML>
 <html lang="en">
 <head>
-	<title>Calender Generator</title>
+  <title>Calender Generator</title>
 
-	<meta charset="utf-8">
-	<meta name="description" content="calendar generator"/>
-	<meta name="keywords" content="calendar generator"/>
-	<meta name="author" content="Filip Strandberg"/>
-	<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta charset="utf-8">
+  <meta name="description" content="calendar generator"/>
+  <meta name="keywords" content="calendar generator"/>
+  <meta name="author" content="Filip Strandberg"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 
-	<!-- Google CDN for jQuery -->
-	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+  <!-- Google CDN for jQuery -->
+  <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 
-	<!-- Functionality for generator -->
-	<script type="text/javascript" src="scripts/script.js"></script>
+  <!-- Functionality for generator -->
+  <script type="text/javascript" src="scripts/script.js"></script>
 
-	<!-- Page styling -->
-	<link rel="stylesheet" type="text/css" href="css/styling.css">
+  <!-- Page styling -->
+  <link rel="stylesheet" type="text/css" href="css/styling.css">
 </head>
 <body>
-	<button id="help_button" onclick="displayHelp()">Help</button>
-	<p class="help_text">To edit a existing calendar, copy the existing calendar code from the wiki and paste here &#8594;</p>
-	<p class="help_text">Click here to display the calendar at the bottom of this page, then click in the cells to change the color of it &#8594;</p>
-	<p class="help_text">Here you select the starting month for the calendar, the calendar will be your selected month plus the two months after &#8594;</p>
-	<p class="help_text">When you have filled in everything you want above, click here to show your calendar. Click multiple times to change header color! &#8594;</p>
-	<p class="help_text">Here you can either add or delete an name to the calendar &#8594;</p>
+  <button id="help_button" onclick="displayHelp()">Help</button>
+  <p class="help_text">To edit a existing calendar, copy the existing calendar code from the wiki and paste here &#8594;</p>
+  <p class="help_text">Click here to display the calendar at the bottom of this page, then click in the cells to change the color of it &#8594;</p>
+  <p class="help_text">Here you select the starting month for the calendar, the calendar will be your selected month plus the two months after &#8594;</p>
+  <p class="help_text">When you have filled in everything you want above, click here to show your calendar. Click multiple times to change header color! &#8594;</p>
+  <p class="help_text">Here you can either add or delete an name to the calendar &#8594;</p>
   
-	<div id="contact">
-	<p>2017-10-18 Filip Strandberg</p>
+  <div id="contact">
+  <p>2017-10-18 Filip Strandberg</p>
     <a href="https://github.com/Pidlik/CalendarGenerator" target="_blank">GitHub</a>
-	</div>
+  </div>
 
-	<div id="color_picker_container">
-		<div class="color" style="background: white;"       onclick="selectColor(0, this)"><span class="colorText">Normal</span></div>
-		<div class="color" style="background: red;" 		onclick="selectColor(1, this)"><span class="colorText">Absent</span></div>
-    	<div class="color" style="background: yellow;"      onclick="selectColor(2, this)"><span class="colorText">Partly absent</span></div>
-		<div class="color" style="background: dodgerblue;"  onclick="selectColor(3, this)"><span class="colorText">Parental</span></div>
-		<div class="color" style="background: olive;"       onclick="selectColor(4, this)"><span class="colorText">Holiday</span></div>
-	</div>
+  <div id="color_picker_container">
+    <div class="color" style="background: white;"       onclick="selectColor(0, this)"><span class="colorText">Normal</span></div>
+    <div class="color" style="background: red;"     onclick="selectColor(1, this)"><span class="colorText">Absent</span></div>
+      <div class="color" style="background: yellow;"      onclick="selectColor(2, this)"><span class="colorText">Partly absent</span></div>
+    <div class="color" style="background: dodgerblue;"  onclick="selectColor(3, this)"><span class="colorText">Parental</span></div>
+    <div class="color" style="background: olive;"       onclick="selectColor(4, this)"><span class="colorText">Holiday</span></div>
+  </div>
 
-	<div id="main_container">
+  <div id="main_container">
     
-	    <h2>Edit Calendar</h2>
-	    
-	    <div id="textarea_container">
-	      <textarea id="editPastedCalendar" placeholder="Paste HTML code for calendar here..."></textarea>
-	    </div>
-	    
-	    <button id="edit_button" class="button scroll" onclick="calendar.pasted()">Edit</button>
-	    
-	    <hr>
+      <h2>Edit Calendar</h2>
+      
+      <div id="textarea_container">
+        <textarea id="editPastedCalendar" placeholder="Paste HTML code for calendar here..."></textarea>
+      </div>
+      
+      <button id="edit_button" class="button scroll" onclick="calendar.pasted()">Edit</button>
+      
+      <hr>
 
-	    <h2>Generate Calendar</h2>
-	    
-	    <label for="startMonth">From Month</label>
-	    <select id="startMonth" name="startMonth">
-	      <option value="0">January</option>
-	      <option value="1">February</option>
-	      <option value="2">March</option>
-	      <option value="3">April</option>
-	      <option value="4">May</option>
-	      <option value="5">June</option>
-	      <option value="6">July</option>
-	      <option value="7">August</option>
-	      <option value="8">September</option>
-	      <option value="9">October</option>
-	      <option value="10">November</option>
-	      <option value="11">December</option>
-	    </select>
-	 
-	    
-	   	<div class="buttonContainer">
-		   	<button id="generate" class="button scroll half" onclick="calendar.generate()">Generate</button>
-		    <button id="iJustWannaChangeMonthsButton" class="button half" onclick="calendar.iJustWannaChangeMonths()">I just wanna change months</button>
-	   	</div>
-	    
-	    <div id="configureNames">
-	      <input type="text" id="add_destroy_name" value="" placeholder="Name...">
-	      <button id="addName" class="button small" onclick="calendar.addName()">Add name</button>
-	      <button id="destroyName" class="button small" onclick="calendar.destroyName()">Delete name</button>
-	    </div>
-	    <button id="copyButton" class="button" style="display:none" onclick="calendar.copy()">Copy HTML to clipboard</button>
-	</div>
+      <h2>Generate Calendar</h2>
+      
+      <label for="startMonth">From Month</label>
+      <select id="startMonth" name="startMonth">
+        <option value="0">January</option>
+        <option value="1">February</option>
+        <option value="2">March</option>
+        <option value="3">April</option>
+        <option value="4">May</option>
+        <option value="5">June</option>
+        <option value="6">July</option>
+        <option value="7">August</option>
+        <option value="8">September</option>
+        <option value="9">October</option>
+        <option value="10">November</option>
+        <option value="11">December</option>
+      </select>
+   
+      
+      <div class="buttonContainer">
+        <button id="generate" class="button scroll half" onclick="calendar.generate()">Generate</button>
+        <button id="iJustWannaChangeMonthsButton" class="button half" onclick="calendar.iJustWannaChangeMonths()">I just wanna change months</button>
+      </div>
+      
+      <div id="configureNames">
+        <input type="text" id="add_destroy_name" value="" placeholder="Name...">
+        <button id="addName" class="button small" onclick="calendar.addName()">Add name</button>
+        <button id="destroyName" class="button small" onclick="calendar.destroyName()">Delete name</button>
+      </div>
+      <button id="copyButton" class="button" style="display:none" onclick="calendar.copy()">Copy HTML to clipboard</button>
+  </div>
   
-	<table id="calendarTable">
-	<!-- Where the generated/pasted calendar will appear -->
-	</table>
+  <table id="calendarTable">
+  <!-- Where the generated/pasted calendar will appear -->
+  </table>
   
-	<div id="info" style="display:none">
-		<h2>Choose a color with the color picker on the right!</h2>
-		</br>
-		<h2><span style="text-decoration: underline;">Click and drag</span> (or just click) in the cells to change its color!</h2>
-		<h2>You can also <span style="text-decoration: underline;">click on a date</span> to color that whole column olive!</h2>
+  <div id="info" style="display:none">
+    <h2>Choose a color with the color picker on the right!</h2>
+    </br>
+    <h2><span style="text-decoration: underline;">Click and drag</span> (or just click) in the cells to change its color!</h2>
+    <h2>You can also <span style="text-decoration: underline;">click on a date</span> to color that whole column olive!</h2>
 
-		<h3>
-			</br>
-			X with <span style="background: red;">Red</span> background = On vacation/Absent, 
-			X with <span style="background: yellow;">Yellow</span> background = On vacation/Absent part of day, 
-			P with <span style="background: dodgerblue;">Blue</span> background = Parental leave, 
-			H with <span style="background: olive;">Olive</span> background = Public Holiday
-		</h3>
+    <h3>
+      </br>
+      X with <span style="background: red;">Red</span> background = On vacation/Absent, 
+      X with <span style="background: yellow;">Yellow</span> background = On vacation/Absent part of day, 
+      P with <span style="background: dodgerblue;">Blue</span> background = Parental leave, 
+      H with <span style="background: olive;">Olive</span> background = Public Holiday
+    </h3>
 
-		</br>
+    </br>
 
-		<h2>When you're done, click the "Copy HTML to clipboard" button or <span class="cursor_pointer" style="text-decoration: underline;" onclick="calendar.copy()">here</span>, to copy the code and paste in the wiki page!</h2>
-	</div>
+    <h2>When you're done, click the "Copy HTML to clipboard" button or <span class="cursor_pointer" style="text-decoration: underline;" onclick="calendar.copy()">here</span>, to copy the code and paste in the wiki page!</h2>
+  </div>
 
 </body>
 </html>
