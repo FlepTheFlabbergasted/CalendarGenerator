@@ -51,7 +51,7 @@ var calendar = {
     dateRow: null,
     nameRows: [],
     nameRowClassName: "nameRow",
-    pastedCalendar: false,
+    justChangeMonths: false,
 
     /**
      * Main function for generating the table. Called when clicking the "Generate" button.
@@ -106,8 +106,8 @@ var calendar = {
         this.monthsColspan = [0,0,0];
         this.dates = [];
 
-        // If the current calendar has not been generated from pasted code, clear the names too
-        if(!this.pastedCalendar) {
+        // If the user only wants to change the generated months/weeks/days, do not clear the names
+        if(this.justChangeMonths === false) {
             this.names = [];
         }
         this.nameRows = [];
@@ -290,7 +290,7 @@ var calendar = {
         var i = 0;
         
         // If the current calendar has not been generated from pasted code, fetch new names
-        if(!this.pastedCalendar) {
+        if(this.justChangeMonths === false) {
             // Loop Through all the names written in the name input fields.
             for (i = 0; i < this.nrNames; i++) {
                 name = document.getElementById("nameInput" + i).value;
@@ -655,23 +655,21 @@ var calendar = {
     },
 
     /**
-     *  This flag will make sure no name rows are cleared when changing months,
-     *  enabling changing the months when pasting a calendar, without having to
-     *  manually rewrite the names.
+     *  This flag will make sure no name rows are cleared when changing months for the generated calendar.
+     *  This enables changing the months when for a calendar, without having to manually rewrite the names.
      *
      *  Called when pressing the "I just wanna change months" button.
      */
     iJustWannaChangeMonths : function () {
         console.info("[FUNCTION]: Entering calendar.iJustWannaChangeMonths()");
-        this.pastedCalendar = !this.pastedCalendar;
-        var iJustWannaButton = document.getElementById("iJustWannaChangeMonthsButton");
-        // Darker color (19601c)
-        if(iJustWannaButton.style.background == "rgb(25, 96, 28)") {
-            iJustWannaButton.style.background = "rgb(76, 175, 80)";
-        } else {
-            iJustWannaButton.style.background = "rgb(25, 96, 28)";
-        }
-        console.log("[LOG]: Pasted calendar flag is set to: " + this.pastedCalendar);
+        // The value of justChangeMonths enum should only be changed from this function.
+        // TODO: How to make sure this isn't used elsewhere? Maybe reset it in the reset() function somehow?
+
+        this.justChangeMonths = true;
+        this.generate();
+        this.justChangeMonths = false;
+
+        console.log("[LOG]: Changing months for currently generated calendar");
     }
 };
 
