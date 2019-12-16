@@ -62,13 +62,12 @@ var calendar = {
     // Make sure the table is cleared before generating the new table.
     this.reset();
 
-    /* Get the months, weeks, days and all the member's names.
-    * Weeks are calculated by the days, therefore we retreive them first.
+    /* Get the months, weeks and days for the selected months
+    *  Weeks are calculated by the days, therefore we retreive them first.
     */
     this.getMonths();
     this.getDates();
     this.getWeeks();
-    this.getNames();
 
     this.createRows();
     this.style();
@@ -281,33 +280,6 @@ var calendar = {
   },
 
   /**
-   * Get all the names to be put in the calendar and save them.
-   */
-  getNames : function() {
-    console.info("[FUNCTION]: Entering calendar.getNames()");
-    var name = "";
-    var i = 0;
-    
-    // If the current calendar has not been generated from pasted code, fetch new names
-    if(this.justChangeMonths === false) {
-      // Loop Through all the names written in the name input fields.
-      for (i = 0; i < this.nrNames; i++) {
-        name = document.getElementById("nameInput" + i).value;
-        // Assign a default value if none was given.
-        if(name == "") {
-          name = "Name " + (i+1);
-        }
-        this.names.push(name);
-      }
-    } else {
-        console.log("[LOG]: Pasted calendar, no new names were fetched");    
-    }
-    
-    console.log("[LOG]: Nr of names: " + this.names.length);
-    console.log("[LOG]: Names: " + this.names);
-  },
-
-  /**
    * Creates and attaches the month, week, date and all the member rows to the calendar.
    */
   createRows : function() {
@@ -453,13 +425,18 @@ var calendar = {
     var nameRowsClass = null;
     var i = 0;
     
-    // Make sure we start clean.
-    this.reset();
-    
     calendarTableCode = document.getElementById("editPastedCalendar").value;
     // Remove everything not inside "<table> </table>" from the pasted text.
     calendarTableCode = calendarTableCode.substring(calendarTableCode.lastIndexOf("<table"),calendarTableCode.lastIndexOf("</table>")+8);
     
+    if(calendarTableCode === "") {
+      console.log("[LOG]: No pasted calendar code was found, returning");
+      return;
+    }
+
+    // Make sure we start clean.
+    this.reset();
+
     // Assign the pasted code to the table element on the page.
     this.tableObj.innerHTML = calendarTableCode;
     
@@ -529,9 +506,6 @@ var calendar = {
     // Display more editing options.
     displayConfigureNames();
     displayCopyButton();
-    
-    // Display more information under the calendar.
-    displayInfo();
   },
 
   /**
@@ -728,15 +702,7 @@ $(document).ready(function() {
  * Displays the 'copy' button so the calendar code can be copied.
  */
 function displayCopyButton() {
-  var copyButton = document.getElementById("copyButton");
-  copyButton.style.display = "block";
-}
-
-/**
- * Displays the information below the generated/pasted calendar for extra help.
- */
-function displayInfo() {
-  var copyButton = document.getElementById("info");
+  let copyButton = document.getElementById("copyButton");
   copyButton.style.display = "block";
 }
 
@@ -744,7 +710,7 @@ function displayInfo() {
  * Displays buttons to add or delete a name from the calendar.
  */
 function displayConfigureNames() {
-  var div = document.getElementById("configureNames");
+  let div = document.getElementById("configureNames");
   div.style.display = "flex";
 }
 
@@ -752,7 +718,7 @@ function displayConfigureNames() {
  * Displays useful help texts besides the elements on the page.
  */
 function displayHelp() {
-  var helpTexts = document.getElementsByClassName("help_text");
+  let helpTexts = document.getElementsByClassName("help_text");
   
   helpTexts[0].style.top = $("#editPastedCalendar").offset().top + "px";
   helpTexts[1].style.top = $("#edit_button").offset().top + "px";
@@ -768,8 +734,12 @@ function displayHelp() {
     helpTexts[4].style.display = "none";
   }
   
-  var contact = document.getElementById("contact");
+  let contact = document.getElementById("contact");
   contact.style.display = contact.style.display == "block" ? "none" : "block";
+
+  // Displays the information below the generated/pasted calendar for extra help.
+  let infoContainer = document.getElementById("info");
+  infoContainer.style.display = infoContainer.style.display == "block" ? "none" : "block";
 }
 
 /**
