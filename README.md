@@ -18,7 +18,7 @@ Additional help can be displayed by pressing the **Help** button in the top left
 
 Be sure to check the latest [releases](https://github.com/Pidlik/CalendarGenerator/releases) for updates! </br>
 
-Appearance of the tool, help button in the top left corner, main panel in the middle, and the color picker to the right (TOOD: Update images).
+Appearance of the tool, help button in the top left corner, main panel in the middle, and the color picker to the right.
 ![alt text](https://user-images.githubusercontent.com/34168761/70907119-50769f80-2008-11ea-9140-d9fce47fd991.png)
 
 
