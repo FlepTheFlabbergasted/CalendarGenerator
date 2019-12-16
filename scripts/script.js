@@ -564,8 +564,7 @@ var calendar = {
   },
 
   /**
-   * Add eventlisteners to the date row. When clicked colors the
-   * whole column.
+   * Add eventlisteners to the date row. When clicking on a date, it colors the whole column as a holiday/red day.
    */
   addDateCellListener : function(){
     console.info("[FUNCTION]: Entering calendar.addDateCellListener()");
@@ -588,7 +587,12 @@ var calendar = {
               calendar.nameRows[i].cells[index].innerHTML = "";
             }
           } 
-        });
+        }); // $(this).on('click', function() {
+
+        // When hovering over days, change the cursor to a pointer so it's more clear to the user that it is clickable
+        $(this).on('mouseenter', function() {
+          $(this).css("cursor", "pointer");
+        }); // $(this).on('mouseenter', function() {
       }
     });
   },
@@ -690,7 +694,7 @@ function daysInMonth(year, month) {
 $(document).ready(function() {
   // Check what browser is used
   if(typeof window.chrome != "object") {
-    window.alert("Calendar Generator only fully tested in Google Chrome.\nMay not work properly with other browsers.");
+    window.alert("Calendar Generator is only fully tested in Google Chrome.\nMay not work properly with other browsers.");
   }
     
   // Initiate the calendar object.
@@ -717,7 +721,7 @@ $(document).ready(function() {
     });
 
 
-});
+}); // $(document).ready(function() {
 
 
 /**
