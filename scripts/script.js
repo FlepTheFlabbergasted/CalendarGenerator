@@ -1,17 +1,16 @@
+const DEBUG = true;
+function DEBUG_LOG(string) {
+  if(DEBUG == true) {
+    console.log('[DEBUG] ' + string);
+  }
+}
 
-/**
- * Desc.
- * @param {Number} a 
- * @param {Number} b
- * @return {Number} sum
- */
-
-/*
-  console.log("log: Test");
-  console.error("error: Test");
-  console.info("info: Test");
-  console.warn("warn: Test");
-*/ 
+const FUNCTION = true;
+function FUNCTION_LOG(string) {
+  if(FUNCTION == true) {
+    console.log('[FUNCTION] ' + string);
+  }
+}
 
 // Mouse button handling for stupid browsers (Like, really Firefox, really!?)
 var isMouseDown = false;
@@ -57,7 +56,7 @@ var calendar = {
    * Main function for generating the table. Called when clicking the "Generate" button.
    */
   generate : function() {
-    console.info("[FUNCTION]: Entering calendar.generate()");
+    FUNCTION_LOG("Entering calendar.generate()");
 
     // Make sure the table is cleared before generating the new table.
     this.reset();
@@ -79,7 +78,7 @@ var calendar = {
    * Initiate parameters in calendar object that can be set at document load.
    */
   init : function() {
-    console.info("[FUNCTION]: Entering calendar.init()");
+    FUNCTION_LOG("Entering calendar.init()");
     try {
       this.tableObj = document.getElementById("calendarTable");
       this.currentYear = new Date().getFullYear();
@@ -94,7 +93,7 @@ var calendar = {
    * Clear the table to be able to generate next table and reset some parameters.
    */
   reset : function() {
-    console.info("[FUNCTION]: Entering calendar.reset()");
+    FUNCTION_LOG("Entering calendar.reset()");
     while(this.tableObj.hasChildNodes()) {
       this.tableObj.removeChild(this.tableObj.lastChild);
     }
@@ -116,7 +115,7 @@ var calendar = {
    * Get months from the select element in the html file, save start month number and months.
    */
   getMonths : function() {
-    console.info("[FUNCTION]: Entering calendar.getMonths()");
+    FUNCTION_LOG("Entering calendar.getMonths()");
     var i = 0;
     try {
       this.startMonthNr = parseInt(document.getElementById("startMonth").value, 10);
@@ -134,8 +133,8 @@ var calendar = {
           this.months.push(this.monthNames[i - 12]);
         }
       }
-      console.log("[LOG]: Nr months in calendar: " + this.months.length);
-      console.log("[LOG]: Months in calendar: " + this.months);
+      DEBUG_LOG("Nr months in calendar: " + this.months.length);
+      DEBUG_LOG("Months in calendar: " + this.months);
     }
   },
 
@@ -143,7 +142,7 @@ var calendar = {
    * Get all the dates for all the selected months and save them.
    */
   getDates: function() {
-    console.info("[FUNCTION]: Entering calendar.getDates()");
+    FUNCTION_LOG("Entering calendar.getDates()");
     // The first week can contain days from previous month and requires special handling.
     var firstWeekInMonth = true;
 
@@ -193,7 +192,7 @@ var calendar = {
             */
             if(dayOfWeek == 0 || dayOfWeek == 6) {
               this.changeStartWeek = true;
-              console.log("[LOG]: Month starts with Sat/Sun, start week to be changed");
+              DEBUG_LOG("Month starts with Sat/Sun, start week to be changed");
             } else {
               // Insert the missing days in the week from the last month.
               previousMonthDate = nrDaysPreviousMonth - (dayOfWeek - 2);
@@ -219,15 +218,15 @@ var calendar = {
       // Count up the next month's colspan in the next iteration.
       monthsColspanCounter++;
     }
-    console.log("[LOG]: Nr dates in calendar: " + this.dates.length);
-    console.log("[LOG]: Dates in calendar: " + this.dates);
+    DEBUG_LOG("Nr dates in calendar: " + this.dates.length);
+    DEBUG_LOG("Dates in calendar: " + this.dates);
   },
 
   /**
    * Get all the weeks for all the selected months and save them.
    */
   getWeeks: function() {
-    console.info("[FUNCTION]: Entering calendar.getWeeks()");
+    FUNCTION_LOG("Entering calendar.getWeeks()");
 
     var nrDaysToStartMonth = 0;
     var nrDaysInYear = 0;
@@ -250,11 +249,11 @@ var calendar = {
      * Alternatively if the month starts with a monday and the day of the year is evenly divided by 7.
      */
     if(this.changeStartWeek || this.startMonthNr == 0) {
-      console.log("[LOG]: Changing start week with +1");
+      DEBUG_LOG("Changing start week with +1");
       this.startWeek++;
     } else if (this.firstWeekDayMonday && (nrDaysToStartMonth % 7 == 0)) {
       // This shit only happens once or twice a year: https://www.timeanddate.com/calendar/weekday-monday-1
-      console.log("[LOG]: Month starts with Monday and day of the year is evenly dividable by 7, start week +1");
+      DEBUG_LOG("Month starts with Monday and day of the year is evenly dividable by 7, start week +1");
       this.startWeek++;
     }
   
@@ -269,21 +268,21 @@ var calendar = {
     /* Calculating weeks depends on the functions ceil() and round(), that
     *  can make them prone to +-1 errors, therefore log useful info for debugging.
     */
-    console.log("[LOG]: Nr weeks in the year: "         + nrDaysInYear/7);
-    console.log("[LOG]: Nr weeks in the year .round(): "+ nrWeeksInYear);
-    console.log("[LOG]: Start week: "                   + nrDaysToStartMonth/7);
-    console.log("[LOG]: Start week.ceil(): "            + this.startWeek);
-    console.log("[LOG]: Nr weeks in calendar: "         + this.dates.length/5);
-    console.log("[LOG]: Nr weeks in calendar .round(): "+ this.nrWeeks);
-    console.log("[LOG]: Nr weeks saved: " + this.weeks.length);
-    console.log("[LOG]: Weeks: " + this.weeks);
+    DEBUG_LOG("Nr weeks in the year: "         + nrDaysInYear/7);
+    DEBUG_LOG("Nr weeks in the year .round(): "+ nrWeeksInYear);
+    DEBUG_LOG("Start week: "                   + nrDaysToStartMonth/7);
+    DEBUG_LOG("Start week.ceil(): "            + this.startWeek);
+    DEBUG_LOG("Nr weeks in calendar: "         + this.dates.length/5);
+    DEBUG_LOG("Nr weeks in calendar .round(): "+ this.nrWeeks);
+    DEBUG_LOG("Nr weeks saved: " + this.weeks.length);
+    DEBUG_LOG("Weeks: " + this.weeks);
   },
 
   /**
    * Creates and attaches the month, week, date and all the member rows to the calendar.
    */
   createRows : function() {
-    console.info("[FUNCTION]: Entering calendar.createRows()");
+    FUNCTION_LOG("Entering calendar.createRows()");
     var cell = null;
     var allCells = null;
     var weekColor = "";
@@ -344,7 +343,7 @@ var calendar = {
    * Sets the style of the calendar by calling three minor styling functions.
    */
   style : function() {
-    console.info("[FUNCTION]: Entering calendar.style()");
+    FUNCTION_LOG("Entering calendar.style()");
     this.styleRows();
     this.styleCells();
     this.styleTable();
@@ -354,7 +353,7 @@ var calendar = {
    * Sets the style of month, week and date rows.
    */
   styleRows : function(){
-    console.info("[FUNCTION]: Entering calendar.styleRows()");
+    FUNCTION_LOG("Entering calendar.styleRows()");
     var i = 0;
     
     // Change colspan and color the cells for the month row.
@@ -383,7 +382,7 @@ var calendar = {
    * Sets the style of all the cells in the calendar.
    */
   styleCells : function(){
-    console.info("[FUNCTION]: Entering calendar.styleCells()");
+    FUNCTION_LOG("Entering calendar.styleCells()");
     var allCells = null;
     var cellPadding = "4px 1px 4px 1px";
     var cellBorder = "1px solid black";
@@ -401,7 +400,7 @@ var calendar = {
    * Sets the style of the calendar itself.
    */
   styleTable : function(){
-    console.info("[FUNCTION]: Entering calendar.styleTable()");
+    FUNCTION_LOG("Entering calendar.styleTable()");
     this.tableObj.style.textAlign = "center";
     this.tableObj.style.fontFamily = "calibri";
     this.tableObj.style.width = "100%";
@@ -419,7 +418,7 @@ var calendar = {
    */
   pasted : function() {
     // TODO: Set all variables possible in calendar object.
-    console.info("[FUNCTION]: Entering calendar.pasted()");
+    FUNCTION_LOG("Entering calendar.pasted()");
 
     var calendarTableCode = "";
     var nameRowsClass = null;
@@ -430,7 +429,7 @@ var calendar = {
     calendarTableCode = calendarTableCode.substring(calendarTableCode.lastIndexOf("<table"),calendarTableCode.lastIndexOf("</table>")+8);
     
     if(calendarTableCode === "") {
-      console.log("[LOG]: No pasted calendar code was found, returning");
+      DEBUG_LOG("No pasted calendar code was found, returning");
       return;
     }
 
@@ -459,15 +458,15 @@ var calendar = {
     this.styleTable();
     this.enableEditing();
 
-    console.log("[LOG]: Nr names found: " + this.names.length);
-    console.log("[LOG]: The names found: " + this.names);
+    DEBUG_LOG("Nr names found: " + this.names.length);
+    DEBUG_LOG("The names found: " + this.names);
   },
 
   /**
    * Copies the calendar as text to the clipboard.
    */
   copy : function() {
-    console.info("[FUNCTION]: Entering calendar.copy()");
+    FUNCTION_LOG("Entering calendar.copy()");
     var calendarTableCode = null;
     var dummy = null;
     
@@ -490,14 +489,14 @@ var calendar = {
     // Flash the copy button
     fadeOutnIn($('#copyButton'), 50);
 
-    console.log("[LOG]: Calendar code has been copied to clipboard");
+    DEBUG_LOG("Calendar code has been copied to clipboard");
   },
 
   /**
    * Enable editing of the calendar through eventlisteners.
    */
   enableEditing : function() {
-    console.info("[FUNCTION]: Entering calendar.enableEditing()");
+    FUNCTION_LOG("Entering calendar.enableEditing()");
     this.addCellListener();
     this.addDateCellListener();
     
@@ -511,7 +510,7 @@ var calendar = {
    * when clicked and dragged or just clicked.
    */
   addCellListener : function() {
-    console.info("[FUNCTION]: Entering calendar.addCellListener()");
+    FUNCTION_LOG("Entering calendar.addCellListener()");
     
     // Find every cell in every name row and assign an eventlistener to it.
     $("." + this.nameRowClassName).find("td").each(function(index) {
@@ -539,7 +538,7 @@ var calendar = {
    * Add eventlisteners to the date row. When clicking on a date, it colors the whole column as a holiday/red day.
    */
   addDateCellListener : function(){
-    console.info("[FUNCTION]: Entering calendar.addDateCellListener()");
+    FUNCTION_LOG("Entering calendar.addDateCellListener()");
     var i = 0;
     
     // Find each cell in the date row and assign an eventlistener to it.
@@ -573,7 +572,7 @@ var calendar = {
    * Add a extra name to the calendar.
    */
   addName : function() {
-    console.info("[FUNCTION]: Entering calendar.addName()");
+    FUNCTION_LOG("Entering calendar.addName()");
     var cell = null;
     var nameToAdd = document.getElementById("add_destroy_name").value;
     
@@ -598,16 +597,16 @@ var calendar = {
     this.styleCells();
     this.addCellListener();
     
-    console.log("[LOG]: Created: " + nameToAdd);
-    console.log("[LOG]: Nr of names: " + this.names.length);
-    console.log("[LOG]: Names: " + this.names);        
+    DEBUG_LOG("Created: " + nameToAdd);
+    DEBUG_LOG("Nr of names: " + this.names.length);
+    DEBUG_LOG("Names: " + this.names);        
   },
 
   /**
    * Remove a name from the calendar.
    */
   destroyName : function() {
-    console.info("[FUNCTION]: Entering calendar.destroyName()");
+    FUNCTION_LOG("Entering calendar.destroyName()");
     var nameIndex = -1;
     var nameToDestroy = document.getElementById("add_destroy_name").value;
 
@@ -621,11 +620,11 @@ var calendar = {
       this.nameRows.splice(nameIndex, 1);
       this.names.splice(nameIndex, 1);
       
-      console.log("[LOG]: DESTROYED " + nameToDestroy);
-      console.log("[LOG]: Nr of names: " + this.names.length);
-      console.log("[LOG]: Names: " + this.names);
+      DEBUG_LOG("DESTROYED " + nameToDestroy);
+      DEBUG_LOG("Nr of names: " + this.names.length);
+      DEBUG_LOG("Names: " + this.names);
     } else {
-      console.log("[LOG]: No such name in calendar: " + nameToDestroy);
+      DEBUG_LOG("No such name in calendar: " + nameToDestroy);
     }
   },
 
@@ -636,7 +635,7 @@ var calendar = {
    *  Called when pressing the "I just wanna change months" button.
    */
   iJustWannaChangeMonths : function () {
-    console.info("[FUNCTION]: Entering calendar.iJustWannaChangeMonths()");
+    FUNCTION_LOG("Entering calendar.iJustWannaChangeMonths()");
     // The value of justChangeMonths enum should only be changed from this function.
     // TODO: How to make sure this isn't used elsewhere? Maybe reset it in the reset() function somehow?
 
@@ -644,7 +643,7 @@ var calendar = {
     this.generate();
     this.justChangeMonths = false;
 
-    console.log("[LOG]: Changing months for currently generated calendar");
+    DEBUG_LOG("Changing months for currently generated calendar");
   }
 };
 
@@ -753,7 +752,7 @@ function selectColor(color, obj) {
 
   obj.style.width = "7em";
   $( obj ).find( '.colorText' ).css("right", "7.5em");
-  console.log("Picked color: " + calendar.paletteColor);
+  DEBUG_LOG("Picked color: " + calendar.paletteColor);
 }
 
 function fadeOutnIn(obj, speed) {
