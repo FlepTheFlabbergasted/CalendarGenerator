@@ -441,8 +441,6 @@ var calendar = {
     this.tableObj.innerHTML = calendarTableCode;
     
     // Save the rows so they can be accessed easy later.
-    this.monthRow = document.getElementById("monthRow"); // Not used as of v2.0
-    this.weekRow = document.getElementById("weekRow");  // Noy used as of v2.0
     this.dateRow = document.getElementById("dateRow");
     this.dates = this.dateRow.cells;
     
